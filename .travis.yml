@@ -1,2 +1,9 @@
 language: node_js
 node_js: node
+deploy:
+  provider: heroku
+  api_key:
+    secure: J0zTqbpuLMJE6FkLH4Mr4bvhBkwICJmTmlXHEsfuUQpyrS60eh+1FNXWD9TP+VPRxEcPe/3BdGL3/gEIXU1MSSF3ixabTdch9HgWz0oxc5iMsYbQ/KUy+IOY4oqYpqEmW1xyZaKyXa7Dcr1UdJmTO2Er4uce6KhiMauw1knExQDyW5Rvg8sqBxvOqdmqLkrC4+G5grwvIqXGVjvUT9BqJ3WodzfEb+JTCYUW0YDURIfy8wgw/snfkZSIyCz7uXcNHcpJIVrVnlskngJ/T+xW5iGhqVpRKcjkZh7Z94qNirQX0tXi73R96UEegh4cdrMNQbyBUxc3BnGs6WnSH3Z78ECXFrA0+0A60j1XIAviBOppiwsgaxLRlQa109iIUgmWx2xVt8/bsMFTIJzluS4rpUiq/Mf95R5Bw3EFMc+qtNOuavIdY2Mp7G3o+Eja4CgNiF/RId2QtQesOQVZq++wA9OBHlIHNTjJpW324881Hkqt/d96FkHp8WDngiJbGjD0eSmMH6n3vdl0MwwD6zMwR7WGApwXtQcQ1/FUHMW4nqpMFDZ7dj7tieFyIooFMuGFo89pKpLt2thQxVlnCc3k4b7m6w2snPi7mUX8i+6sYYfSNpjxUZCa9AA14xiXywNHl6gTxs2U4+EfCXDC3Efz9obBd1eolZn7ZlV8nYOG20U=
+  app: morning-citadel-10700
+  on:
+    repo: splnlss/BestSeat

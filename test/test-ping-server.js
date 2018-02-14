@@ -16,7 +16,7 @@ describe('GET endpoint', function () {
     return chai.request(app)
       .get('/')
       .then(_res =>{
-        res = _ res
+        res = _res
         res.should.have.status(200)
       })
   })
