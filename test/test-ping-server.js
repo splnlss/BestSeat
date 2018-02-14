@@ -8,6 +8,8 @@ const should = chai.should();
 // const { closeServer, runServer, app } = require('../server');
 const { TEST_DATABASE_URL } = require('../config');
 
+const app = require('../server')
+
 chai.use(chaiHttp);
 
 describe('GET endpoint', function () {

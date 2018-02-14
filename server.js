@@ -4,6 +4,7 @@ app.use(express.static('public'));
 app.listen(process.env.PORT || 8080);
 
 
+
 // const bodyParser = require('body-parser');
 // const express = require('express');
 // const morgan = require('morgan');
@@ -68,3 +69,4 @@ app.listen(process.env.PORT || 8080);
 // module.exports = {
 //   runServer, app, closeServer
 // }
+module.exports = app
