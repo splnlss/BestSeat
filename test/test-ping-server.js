@@ -25,15 +25,3 @@ describe('GET endpoint', function() {
       })
   })
 })
-
-describe('Get chair.html endpoint', function() {
-  it('shoud return server 200', function() {
-    let resolve
-    return chai.request(app)
-      .get('/chair.html')
-      .then(_res => {
-        res = _res
-        res.should.have.status(200)
-      })
-  })
-})
