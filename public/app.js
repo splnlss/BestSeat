@@ -52,9 +52,26 @@ function getAndDisplayNewReviews() {
   getNewReviews(displayNewReviews);
 }
 
+function setupUIHandlers() {
+  $('#chairAddForm').on('submit', handleFormSubmit)
+
+}
+
+function handleFormSubmit(event) {
+  event.preventDefault()
+  MOCK_NEW_REVIEWS.newReviews.push({
+    "venue": $('#venueInput').val(),
+    "chairReview": $('#reviewInput').val(),
+    "userName": $('#userNameInput').val()
+  })
+  getAndDisplayNewReviews()
+}
+
 $(function() {
-  getAndDisplayNewReviews();
+  getAndDisplayNewReviews()
+  setupUIHandlers()
 })
+
 
 //add review section
 //add form event handler
