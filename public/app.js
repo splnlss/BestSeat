@@ -27,7 +27,9 @@ let MOCK_NEW_REVIEWS = {
 }
 
 function renderReview(review) {
-  return `<li><h3>${review.venue}</h3><p>${review.chairReview}</p>
+  return `<li><h3>${review.venue}</h3><button class="editReview" data-reviewid=${review.id}>Edit</button>
+  <button class="deleteReview" data-reviewid=${review.id}>Delete</button>
+  <p>${review.chairReview}</p>
   </li>`
 }
 
@@ -52,12 +54,72 @@ function getAndDisplayNewReviews() {
   getNewReviews(displayNewReviews);
 }
 
+function renderReviewForm(review) {
+  const reviewDataID = ` data-reviewid =${review.id}`
+  return `<h2> Add a review</h2>
+  <form id="${review?'chairEditForm':
+    'chairAddForm'}"${review?reviewDataID:""}>
+    <label for="venue">Venue:</label>
+    <input type="text" id="venueInput" name="venue"> </input>
+    <label for="review">Chair Review:</label>
+    <input type="text" id="reviewInput" name="review"> </input>
+    <label for="userNameInput">UserName:</label>
+    <input type="text" id="userNameInput" name="userName"> </input>
+    <input type="submit"></input>
+  </form>
+  <button id="cancelForm"> cancel</button>`
+}
+
+function displayAddForm() {
+  $('main').html(
+    renderReviewForm()
+  )
+}
+
+function displayEditForm(review) {
+  $('main').html(
+    renderReviewForm(review)
+  )
+  $('#venueInput').val(review.venue)
+  $('#reviewInput').val(review.chairReview)
+  $('#userNameInput').val(review.userName)
+}
+
+function renderSearchForm() {
+  return ` <h2> Edit a review</h2>
+  <p> Enter venue search</p>
+  	<form id="chairSearchForm">
+    <label for="venue">Venue:</label>
+    <input type="text" id="venueSearch" name="venueSearch"> </input>
+    <input type="submit"></input>
+  </form>  `
+}
+
+function displaySearchForm() {
+  $(`main`).html(
+    renderSearchForm()
+  )
+}
+
 function setupUIHandlers() {
-  $('#chairAddForm').on('submit', handleFormSubmit)
+  $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
+  $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
+  $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
+  $('#addForm').on('click', displayAddForm)
+  $('main').on('click', '#cancelForm', getAndDisplayNewReviews)
+  $('main').on('click', '.editReview', handleEditReview)
+  $('main').on('click', '.deleteReview', handleDeleteReview)
 
 }
 
-function handleFormSubmit(event) {
+function handleEditReview(event){
+  const review = MOCK_NEW_REVIEWS.newReviews.find(function (review){
+    return review.id == $(event.currentTarget).data().reviewid
+  })
+  displayEditForm(review)
+}
+
+function handleAddFormSubmit(event) {
   event.preventDefault()
   MOCK_NEW_REVIEWS.newReviews.push({
     "venue": $('#venueInput').val(),
@@ -65,6 +127,35 @@ function handleFormSubmit(event) {
     "userName": $('#userNameInput').val()
   })
   getAndDisplayNewReviews()
+}
+
+function handleEditFormSubmit(event){
+  event.preventDefault()
+  const review = MOCK_NEW_REVIEWS.newReviews.find(function (review){
+    return review.id == $(event.currentTarget).data().reviewid
+  })
+  review.venue = $('#venueInput').val()
+  review.chairReview = $('#reviewInput').val()
+  review.userName = $('#userNameInput').val()
+  getAndDisplayNewReviews()
+}
+
+function handleSearchFormSubmit(event) {
+  event.preventDefault()
+  const element = MOCK_NEW_REVIEWS.newReviews.filter(function(review) {
+    return review.venue.toLowerCase().trim() == $('#venueSearch').val().toLowerCase()
+      .trim()
+  })
+  getAndDisplayNewReviews()
+}
+
+function handleDeleteReview(event){
+  const review = MOCK_NEW_REVIEWS.newReviews.find(function (review){
+    return review.id == $(event.currentTarget).data().reviewid
+  })
+    const removeIndex = MOCK_NEW_REVIEWS.newReviews.indexOf(review)
+    console.log(MOCK_NEW_REVIEWS.newReviews.slice(removeIndex))
+    displayNewReviews(MOCK_NEW_REVIEWS.newReviews.slice(removeIndex))
 }
 
 $(function() {
