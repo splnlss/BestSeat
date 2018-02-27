@@ -4,13 +4,11 @@ const mongoose = require('mongoose')
 
 const should = chai.should();
 
-// const { SeatReview } = require('../models');
-// const { closeServer, runServer, app } = require('../server');
+const {SeatReview} = require('../review/models.js');
+const { closeServer, runServer, app } = require('../server');
 const {
   TEST_DATABASE_URL
 } = require('../config');
-
-const app = require('../server')
 
 chai.use(chaiHttp);
 

@@ -110,12 +110,12 @@ function setupUIHandlers() {
   $('main').on('click', '.editReview', handleEditReview)
   $('main').on('click', '.deleteReview', handleDeleteReview)
 
-}
 
 function handleEditReview(event){
   const review = MOCK_NEW_REVIEWS.newReviews.find(function (review){
     return review.id == $(event.currentTarget).data().reviewid
   })
+//  console.log(`handleEditReview: Review = ${review}`)
   displayEditForm(review)
 }
 
@@ -154,15 +154,10 @@ function handleDeleteReview(event){
     return review.id == $(event.currentTarget).data().reviewid
   })
     const removeIndex = MOCK_NEW_REVIEWS.newReviews.indexOf(review)
-    console.log(MOCK_NEW_REVIEWS.newReviews.slice(removeIndex))
-    displayNewReviews(MOCK_NEW_REVIEWS.newReviews.slice(removeIndex))
+    displayNewReviews(MOCK_NEW_REVIEWS.newReviews.splice(removeIndex,1))
 }
 
 $(function() {
   getAndDisplayNewReviews()
   setupUIHandlers()
 })
-
-
-//add review section
-//add form event handler
