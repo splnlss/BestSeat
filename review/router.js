@@ -2,21 +2,16 @@ const express = require('express')
 const router = express.Router()
 
 const bodyParser = require('body-parser')
-const {ChairReview} = require('./models.js')
+const {ChairReview} = require('./model.js')
 
-
-//Temp for Testing
-router.get('/', (req, res) => {
-  return res.status(200).send(message);
-  // add index...
-})
+const jsonParser = bodyParser.json()
 
 //get reviews
-router.get('/reviews', (req, res) => {
+router.get('/', (req, res) => {
   ChairReview
     .find()
     .then(reviews => {
-      res.json(reviews.map(post => review.serialize()))
+      res.json(reviews.map(review => review.serialize()))
     })
     .catch(err => {
       console.error(err)
@@ -24,7 +19,7 @@ router.get('/reviews', (req, res) => {
     })
 })
 
-router.get('/reviews/:id', (req,res) = {
+router.get('/:id', (req,res) => {
   ChairReview
       .findById(req.params.id)
       .then(review => res.json(review.serialize()))
@@ -34,7 +29,7 @@ router.get('/reviews/:id', (req,res) = {
       })
 })
 
-router.post('/reviews', (req, res) => {
+router.post('/', jsonParser, (req, res) => {
   const requiredFields = ['venue', 'chairReview', 'userName'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -47,29 +42,17 @@ router.post('/reviews', (req, res) => {
   ChairReview
   .create({
       venue: req.body.venue,
-      ChairReview: req.body.ChairReview,
+      chairReview: req.body.chairReview,
       userName: req.body.userName
     })
-  .then(review res.status(201).json(review.serialize()))
+  .then(review => res.status(201).json(review.serialize()))
     .catch(err => {
       console.error(err)
       res.status(500).json({ error: 'error creating review' })
     })
   })
 
-  router.delete('/reviews/:id', (req, res) => {
-    ChairReview
-      .findByIdAndRemove(req.params.id)
-      .then(() => {
-        res.status(204).json({ message: 'success' });
-      })
-      .catch(err => {
-        console.error(err);
-        res.status(500).json({ error: 'error deleting review' });
-      })
-  })
-
-router.put('/reviews/:id', (req, res) =>{
+router.put('/:id', jsonParser, (req, res) =>{
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
@@ -81,21 +64,28 @@ router.put('/reviews/:id', (req, res) =>{
       updated[field] = req.body[field];
     }
   })
-  chairReview
+  ChairReview
     .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
     .then(updatedPost => res.status(204).end())
     .catch(err => res.status(500).json({ message: 'error updating review' }));
-})
+}})
 
-})
+router.delete('/:id', (req, res) => {
+    ChairReview
+      .findByIdAndRemove(req.params.id)
+      .then(() => {
+        res.status(204).json({ message: 'success' });
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({ error: 'error deleting review' });
+      })
+  })
 
-app.use('*', function (req, res) {
-  res.status(404).json({ message: 'Not Found' });
-}
 
 
 // get by id
 // get by venue
 // get all
 // update/post/delete
-module.exports = router
+module.exports = {router}

@@ -12,15 +12,16 @@ ReviewSchema.statics.findByVenue =  function(venue){
   return this.where("venue", venue)
 }
 
-ReviewSchema.statics.serialize = function(){
+ReviewSchema.methods.serialize = function(){
   return {
       id: this._id,
       venue: this.venue,
+      chairReview: this.chairReview,
       userName: this.userName,
       publishedAt: this.publishedAt
   }
 }
 
-const ChairReview = mongoos.model('ChairReview', ReviewSchema)
+const ChairReview = mongoose.model('ChairReview', ReviewSchema)
 
-module.export = {ChairReview}
+module.exports = {ChairReview}

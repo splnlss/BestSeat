@@ -6,16 +6,19 @@ const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 
 const {DATABASE_URL, PORT} = require('./config')
-const {ChairReview} = require('/review/models.js')
-
+const {router:reviewRouter} = require('./review')
 // require models
+
 const app = express()
+
 app.use(morgan('common'))
 app.use(bodyParser.json())
 app.use(express.static('public'))
 
-app.listen(process.env.PORT || 8080);
-
+app.use('/api/review/', reviewRouter)
+// app.use('*', function (req, res) {
+//   res.status(404).json({ message: 'Not Found' });
+// })
 
 let server
 
@@ -50,6 +53,7 @@ function closeServer() {
     })
   })
 }
+
 
 if (require.main === module) {
   runServer().catch(err => console.error(err))
