@@ -3,22 +3,26 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
+const passport = require('passport')
 mongoose.Promise = global.Promise
 
 const {DATABASE_URL, PORT} = require('./config')
 const {router:reviewRouter} = require('./review')
+const {router:userRouter} = require('./user')
+const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 // require models
 
 const app = express()
 
+passport.use(localStrategy)
+passport.use(jwtStrategy)
+
 app.use(morgan('common'))
 app.use(bodyParser.json())
 app.use(express.static('public'))
-
+app.use('/api/user', userRouter)
 app.use('/api/review/', reviewRouter)
-// app.use('*', function (req, res) {
-//   res.status(404).json({ message: 'Not Found' });
-// })
+app.use('/api/auth/', authRouter)
 
 let server
 

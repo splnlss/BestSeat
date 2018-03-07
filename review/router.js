@@ -53,7 +53,8 @@ router.post('/', jsonParser, (req, res) => {
   })
 
 router.put('/:id', jsonParser, (req, res) =>{
-  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+  //console.log(req.params.id); console.log(req.body.id)
+  if (!(req.params.id && req.body.id && (req.params.id === req.body.id))) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
     })
@@ -64,10 +65,19 @@ router.put('/:id', jsonParser, (req, res) =>{
       updated[field] = req.body[field];
     }
   })
+  console.log(req.params.id); console.log(req.body.id)
   ChairReview
     .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
     .then(updatedPost => res.status(204).end())
-    .catch(err => res.status(500).json({ message: 'error updating review' }));
+    .catch(err => res.status(500).json({ message: 'error updating review' }))
+    // ChairReview
+    //   .findById(req.params.id)
+    //   .then(console.log(review))
+    //   .then(review => res.json(review.serialize()))
+    //   .catch(err => {
+    //     console.error(err);
+    //     res.status(500).json({ error: 'error finding by ID' });
+    //   })
 }})
 
 router.delete('/:id', (req, res) => {

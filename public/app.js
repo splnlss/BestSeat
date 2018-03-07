@@ -1,29 +1,32 @@
-let MOCK_NEW_REVIEWS = {
-  'newReviews': [{
-    "id": "1111111",
-    "venue": "McDonalds",
-    "chairReview": "Hard, plastic. The worst for a bad tailbone",
-    "userName": "John Doe",
-    "publishedAt": 1470016976609
-  }, {
-    "id": "2222222",
-    "venue": "Cookshop",
-    "chairReview": "Wooden chair - decently comfortable for about 30 min",
-    "userName": "Jane Doe",
-    "publishedAt": 1470012976609
-  }, {
-    "id": "333333",
-    "venue": "Glasserie",
-    "chairReview": "Folding yard chairs - How did these ever get popular in restaurants? Zero lumbar support, tailbone protrudes. You just want to smash them. ",
-    "userName": "Jim Doe",
-    "publishedAt": 1470011976609
-  }, {
-    "id": "4444444",
-    "venue": "Buttermilk Channel",
-    "chairReview": "Folding yard chairs AGAIN",
-    "userName": "Jackie Doe",
-    "publishedAt": 1470009976609
-  }]
+// const freeSoundAPI = (search) =>{
+//   const settings = {
+//     url: FREESOUND_SEARCH_URL,
+//     type: 'GET',
+//     dataType: 'jsonp',
+//     data:{
+//       format: 'jsonp',
+//       for: 'results:*',
+//       query: search,
+//       token: TOKEN,
+//       count: 12,
+//       fields: "name,id,username,url,previews" // description
+//     },
+//     success: (data) => { importData(data.results) },
+//     failure: (error) => { console.log(`error: ${error}`)
+//       noSearchResults()
+//    }
+//   }
+//   $.ajax(settings)
+// }
+
+function getAllReviews (success, failure){
+  const settings = {
+    url: '/api/review',
+    type: 'GET',
+    dataType: 'json',
+    success,failure
+  }
+  $.ajax(settings)
 }
 
 function renderReview(review) {
@@ -34,24 +37,21 @@ function renderReview(review) {
 }
 
 function renderReviews(reviews) {
-  return `<ul>${reviews.map(renderReview).join("\n")}
-  </ul>`
-}
-
-function getNewReviews(callbackFn) {
-  setTimeout(function() {
-    callbackFn(MOCK_NEW_REVIEWS)
-  }, 100);
+  return `<ul>${reviews.map(renderReview).join("\n")}</ul>`
 }
 
 function displayNewReviews(data) {
+  console.log(data)
   $('main').html(
-    renderReviews(data.newReviews)
+    renderReviews(data)//NEED TO SORT BY DATE!!
   )
 }
 
 function getAndDisplayNewReviews() {
-  getNewReviews(displayNewReviews);
+  getAllReviews(displayNewReviews, function(err){
+      console.log('error getting All Reviews')
+    })
+
 }
 
 function renderReviewForm(review) {
@@ -109,10 +109,10 @@ function setupUIHandlers() {
   $('main').on('click', '#cancelForm', getAndDisplayNewReviews)
   $('main').on('click', '.editReview', handleEditReview)
   $('main').on('click', '.deleteReview', handleDeleteReview)
-
+}
 
 function handleEditReview(event){
-  const review = MOCK_NEW_REVIEWS.newReviews.find(function (review){
+  const review = NEW_REVIEWS.newReviews.find(function (review){
     return review.id == $(event.currentTarget).data().reviewid
   })
 //  console.log(`handleEditReview: Review = ${review}`)
@@ -121,7 +121,7 @@ function handleEditReview(event){
 
 function handleAddFormSubmit(event) {
   event.preventDefault()
-  MOCK_NEW_REVIEWS.newReviews.push({
+  NEW_REVIEWS.newReviews.push({
     "venue": $('#venueInput').val(),
     "chairReview": $('#reviewInput').val(),
     "userName": $('#userNameInput').val()
@@ -131,7 +131,7 @@ function handleAddFormSubmit(event) {
 
 function handleEditFormSubmit(event){
   event.preventDefault()
-  const review = MOCK_NEW_REVIEWS.newReviews.find(function (review){
+  const review = NEW_REVIEWS.newReviews.find(function (review){
     return review.id == $(event.currentTarget).data().reviewid
   })
   review.venue = $('#venueInput').val()
@@ -142,7 +142,7 @@ function handleEditFormSubmit(event){
 
 function handleSearchFormSubmit(event) {
   event.preventDefault()
-  const element = MOCK_NEW_REVIEWS.newReviews.filter(function(review) {
+  const element = NEW_REVIEWS.newReviews.filter(function(review) {
     return review.venue.toLowerCase().trim() == $('#venueSearch').val().toLowerCase()
       .trim()
   })
@@ -150,11 +150,11 @@ function handleSearchFormSubmit(event) {
 }
 
 function handleDeleteReview(event){
-  const review = MOCK_NEW_REVIEWS.newReviews.find(function (review){
+  const review = NEW_REVIEWS.newReviews.find(function (review){
     return review.id == $(event.currentTarget).data().reviewid
   })
-    const removeIndex = MOCK_NEW_REVIEWS.newReviews.indexOf(review)
-    displayNewReviews(MOCK_NEW_REVIEWS.newReviews.splice(removeIndex,1))
+    const removeIndex = NEW_REVIEWS.newReviews.indexOf(review)
+    displayNewReviews(NEW_REVIEWS.newReviews.splice(removeIndex,1))
 }
 
 $(function() {
