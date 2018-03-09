@@ -74,7 +74,6 @@ function deleteReview (id, success, failure){
   $.ajax(settings)
 }
 
-
 function renderReview(review) {
   return `<li><h3>${review.venue}</h3><button class="editReview" data-reviewid=${review.id}>Edit</button>
   <button class="deleteReview" data-reviewid=${review.id}>Delete</button>
@@ -97,7 +96,6 @@ function getAndDisplayNewReviews() {
   getAllReviews(displayNewReviews, function(err){
       console.log('error getting All Reviews')
     })
-
 }
 
 function renderReviewForm(review) {
@@ -156,6 +154,7 @@ function setupUIHandlers() {
   $('main').on('click', '#cancelForm', getAndDisplayNewReviews)
   $('main').on('click', '.editReview', handleEditReview)
   $('main').on('click', '.deleteReview', handleDeleteReview)
+  $('main').on('submit', '#userLogin', handleDeleteReview)
 }
 
 function handleEditReview(event){
@@ -185,7 +184,7 @@ function handleEditFormSubmit(event){
   putReview(review, getAndDisplayNewReviews, handleApiError)
 }
 
-function handleSearchFormSubmit(event) {
+function handleSearchFormSubmit(userName) {
   event.preventDefault()
   const element = NEW_REVIEWS.newReviews.filter(function(review) {
     return review.venue.toLowerCase().trim() == $('#venueSearch').val().toLowerCase()
@@ -197,12 +196,38 @@ function handleSearchFormSubmit(event) {
 function handleDeleteReview(event){
     const reviewID = $(event.currentTarget).data().reviewid
     deleteReview(reviewID, getAndDisplayNewReviews, handleApiError)
-    // const removeIndex = NEW_REVIEWS.newReviews.indexOf(reviewID)
-    // displayNewReviews(NEW_REVIEWS.newReviews.splice(removeIndex,1))
 }
 
 function handleApiError(err){
   console.log(err)
+}
+
+//login
+
+function postUserLogin(userData, success, failure){
+  console.log(userData)
+  const settings = {
+    url: '/api/user',
+    type: 'POST',
+    data: userData,
+    dataType: 'json',
+    success,failure
+  }
+  $.ajax(settings)
+}
+
+function handleUserLoginSubmit(event) {
+  event.preventDefault()
+  const userLogin = {
+    userName : $('#userNameInput').val()
+    userPassword : $('#userPasswordInput').val(),
+  }
+  postUserLogin(userLogin, getAndDisplayUserReviews, handleApiError)
+}
+
+function getAndDisplayUserReviews(){
+
+
 }
 
 $(function() {
