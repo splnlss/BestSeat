@@ -1,23 +1,4 @@
-// const freeSoundAPI = (search) =>{
-//   const settings = {
-//     url: FREESOUND_SEARCH_URL,
-//     type: 'GET',
-//     dataType: 'jsonp',
-//     data:{
-//       format: 'jsonp',
-//       for: 'results:*',
-//       query: search,
-//       token: TOKEN,
-//       count: 12,
-//       fields: "name,id,username,url,previews" // description
-//     },
-//     success: (data) => { importData(data.results) },
-//     failure: (error) => { console.log(`error: ${error}`)
-//       noSearchResults()
-//    }
-//   }
-//   $.ajax(settings)
-// }
+let jwt
 
 function getAllReviews (success, failure){
   const settings = {
@@ -44,8 +25,9 @@ function postReview (review, success, failure){
   const settings = {
     url: '/api/review',
     type: 'POST',
-    data: review,
+    data: JSON.stringify(review),
     dataType: 'json',
+    contentType: 'application/json',
     success,failure
   }
   $.ajax(settings)
@@ -53,11 +35,13 @@ function postReview (review, success, failure){
 
 function putReview (review, success, failure){
   console.log('put review')
+  console.log(review)
   const settings = {
     url: `/api/review/${review.id}`,
     type: 'PUT',
-    data: review,
+    data: JSON.stringify(review),
     dataType: 'json',
+    contentType: 'application/json',
     success,
     failure
   }
@@ -147,14 +131,15 @@ function displaySearchForm() {
 }
 
 function setupUIHandlers() {
-  $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
+  $('header').on('click', '#addForm', displayAddForm)
+  $('header').on('click', '#loginForm', displayLoginForm)
+  $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
+  $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
   $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
-  $('#addForm').on('click', displayAddForm)
   $('main').on('click', '#cancelForm', getAndDisplayNewReviews)
   $('main').on('click', '.editReview', handleEditReview)
   $('main').on('click', '.deleteReview', handleDeleteReview)
-  $('main').on('submit', '#userLogin', handleDeleteReview)
 }
 
 function handleEditReview(event){
@@ -199,19 +184,40 @@ function handleDeleteReview(event){
 }
 
 function handleApiError(err){
-  console.log(err)
+  console.error(err)
 }
 
 //login
 
+function displayLoginForm(){
+  $('main').html(
+    renderLoginForm()
+  )
+}
+
+function renderLoginForm(){
+  return `<form id="userLogin">
+    <label for="userName">UserName:</label>
+    <input type="text" id="userNameInput" name="userName"> </input>
+    <label for="userPassword">Password:</label>
+    <input type="text" id="userPasswordInput" name="userPassword"></input>
+    <input type="submit"></input>
+  </form>`
+}
+
 function postUserLogin(userData, success, failure){
   console.log(userData)
   const settings = {
-    url: '/api/user',
+    url: '/api/auth/login',
     type: 'POST',
     data: userData,
     dataType: 'json',
-    success,failure
+    success: function(data){
+      jwt = data.authToken
+      console.log(atob(jwt))
+      success(data)
+    },
+    failure
   }
   $.ajax(settings)
 }
@@ -219,8 +225,8 @@ function postUserLogin(userData, success, failure){
 function handleUserLoginSubmit(event) {
   event.preventDefault()
   const userLogin = {
-    userName : $('#userNameInput').val()
-    userPassword : $('#userPasswordInput').val(),
+    username : $('#userNameInput').val(),
+    password : $('#userPasswordInput').val()
   }
   postUserLogin(userLogin, getAndDisplayUserReviews, handleApiError)
 }

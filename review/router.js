@@ -6,6 +6,8 @@ const {ChairReview} = require('./model.js')
 
 const jsonParser = bodyParser.json()
 
+router.use(jsonParser)
+
 //get reviews
 router.get('/', (req, res) => {
   ChairReview
@@ -29,8 +31,7 @@ router.get('/:id', (req,res) => {
       })
 })
 
-router.post('/', jsonParser, (req, res) => {
-  console.log(req.body)
+router.post('/', (req, res) => {
   const requiredFields = ['venue', 'chairReview', 'userName'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -53,7 +54,7 @@ router.post('/', jsonParser, (req, res) => {
     })
   })
 
-router.put('/:id', jsonParser, (req, res) =>{
+router.put('/:id', (req, res) =>{
   if (!(req.params.id && req.body.id && (req.params.id === req.body.id))) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
