@@ -30,6 +30,7 @@ router.get('/:id', (req,res) => {
 })
 
 router.post('/', jsonParser, (req, res) => {
+  console.log(req.body)
   const requiredFields = ['venue', 'chairReview', 'userName'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -53,11 +54,11 @@ router.post('/', jsonParser, (req, res) => {
   })
 
 router.put('/:id', jsonParser, (req, res) =>{
-  //console.log(req.params.id); console.log(req.body.id)
   if (!(req.params.id && req.body.id && (req.params.id === req.body.id))) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
     })
+  }
   const updated = {};
   const updateableFields = ['venue', 'chairReview', 'userName'];
   updateableFields.forEach(field => {
@@ -65,20 +66,11 @@ router.put('/:id', jsonParser, (req, res) =>{
       updated[field] = req.body[field];
     }
   })
-  console.log(req.params.id); console.log(req.body.id)
   ChairReview
     .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
     .then(updatedPost => res.status(204).end())
     .catch(err => res.status(500).json({ message: 'error updating review' }))
-    // ChairReview
-    //   .findById(req.params.id)
-    //   .then(console.log(review))
-    //   .then(review => res.json(review.serialize()))
-    //   .catch(err => {
-    //     console.error(err);
-    //     res.status(500).json({ error: 'error finding by ID' });
-    //   })
-}})
+})
 
 router.delete('/:id', (req, res) => {
     ChairReview
@@ -92,10 +84,4 @@ router.delete('/:id', (req, res) => {
       })
   })
 
-
-
-// get by id
-// get by venue
-// get all
-// update/post/delete
 module.exports = {router}

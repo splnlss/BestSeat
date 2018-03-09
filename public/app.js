@@ -29,6 +29,52 @@ function getAllReviews (success, failure){
   $.ajax(settings)
 }
 
+function getReview (id, success, failure){
+  const settings = {
+    url: `/api/review/${id}`,
+    type: 'GET',
+    dataType: 'json',
+    success,failure
+  }
+  $.ajax(settings)
+}
+
+function postReview (review, success, failure){
+  console.log(review)
+  const settings = {
+    url: '/api/review',
+    type: 'POST',
+    data: review,
+    dataType: 'json',
+    success,failure
+  }
+  $.ajax(settings)
+}
+
+function putReview (review, success, failure){
+  console.log('put review')
+  const settings = {
+    url: `/api/review/${review.id}`,
+    type: 'PUT',
+    data: review,
+    dataType: 'json',
+    success,
+    failure
+  }
+  $.ajax(settings)
+}
+
+function deleteReview (id, success, failure){
+  const settings = {
+    url: `/api/review/${id}`,
+    type: 'DELETE',
+    dataType: 'json',
+    success,failure
+  }
+  $.ajax(settings)
+}
+
+
 function renderReview(review) {
   return `<li><h3>${review.venue}</h3><button class="editReview" data-reviewid=${review.id}>Edit</button>
   <button class="deleteReview" data-reviewid=${review.id}>Delete</button>
@@ -55,14 +101,15 @@ function getAndDisplayNewReviews() {
 }
 
 function renderReviewForm(review) {
-  const reviewDataID = ` data-reviewid =${review.id}`
+  const reviewDataID = review?`data-reviewid =${review.id}`:''
+//review undefined if no review passed
   return `<h2> Add a review</h2>
   <form id="${review?'chairEditForm':
     'chairAddForm'}"${review?reviewDataID:""}>
     <label for="venue">Venue:</label>
     <input type="text" id="venueInput" name="venue"> </input>
     <label for="review">Chair Review:</label>
-    <input type="text" id="reviewInput" name="review"> </input>
+    <input type="text" id="reviewInput" name="chairReview"> </input>
     <label for="userNameInput">UserName:</label>
     <input type="text" id="userNameInput" name="userName"> </input>
     <input type="submit"></input>
@@ -112,32 +159,30 @@ function setupUIHandlers() {
 }
 
 function handleEditReview(event){
-  const review = NEW_REVIEWS.newReviews.find(function (review){
-    return review.id == $(event.currentTarget).data().reviewid
-  })
-//  console.log(`handleEditReview: Review = ${review}`)
-  displayEditForm(review)
+  const reviewID = $(event.currentTarget).data().reviewid
+  getReview(reviewID, displayEditForm,handleApiError)
 }
 
 function handleAddFormSubmit(event) {
   event.preventDefault()
-  NEW_REVIEWS.newReviews.push({
-    "venue": $('#venueInput').val(),
-    "chairReview": $('#reviewInput').val(),
-    "userName": $('#userNameInput').val()
-  })
-  getAndDisplayNewReviews()
+  const review = {
+    venue : $('#venueInput').val(),
+    chairReview : $('#reviewInput').val(),
+    userName : $('#userNameInput').val()
+  }
+  postReview(review, getAndDisplayNewReviews, handleApiError)
 }
 
 function handleEditFormSubmit(event){
   event.preventDefault()
-  const review = NEW_REVIEWS.newReviews.find(function (review){
-    return review.id == $(event.currentTarget).data().reviewid
-  })
-  review.venue = $('#venueInput').val()
-  review.chairReview = $('#reviewInput').val()
-  review.userName = $('#userNameInput').val()
-  getAndDisplayNewReviews()
+  const reviewID = $(event.currentTarget).data().reviewid
+  const review = {
+    id:reviewID,
+    venue : $('#venueInput').val(),
+    chairReview : $('#reviewInput').val(),
+    userName : $('#userNameInput').val()
+  }
+  putReview(review, getAndDisplayNewReviews, handleApiError)
 }
 
 function handleSearchFormSubmit(event) {
@@ -150,11 +195,14 @@ function handleSearchFormSubmit(event) {
 }
 
 function handleDeleteReview(event){
-  const review = NEW_REVIEWS.newReviews.find(function (review){
-    return review.id == $(event.currentTarget).data().reviewid
-  })
-    const removeIndex = NEW_REVIEWS.newReviews.indexOf(review)
-    displayNewReviews(NEW_REVIEWS.newReviews.splice(removeIndex,1))
+    const reviewID = $(event.currentTarget).data().reviewid
+    deleteReview(reviewID, getAndDisplayNewReviews, handleApiError)
+    // const removeIndex = NEW_REVIEWS.newReviews.indexOf(reviewID)
+    // displayNewReviews(NEW_REVIEWS.newReviews.splice(removeIndex,1))
+}
+
+function handleApiError(err){
+  console.log(err)
 }
 
 $(function() {

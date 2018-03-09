@@ -97,7 +97,7 @@ describe('/api/review', function(){
         chairReview: 'David Lynch would eat here but not sit here',
         userName:'Norma Jennings'
       }
-      this.timeout(4000)
+      this.timeout(2000)
       return ChairReview
         .findOne()
         .then(review =>{
@@ -108,7 +108,9 @@ describe('/api/review', function(){
         })
         .then(res => {
           res.should.have.status(204);
-          // return ChairReview.findById(updateData.id);
+        })
+        .then(()=>{
+          return ChairReview.findById(updateData.id)
         })
         .then(post => {
           post.venue.should.equal(updateData.venue)
