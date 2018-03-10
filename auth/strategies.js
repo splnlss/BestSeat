@@ -9,6 +9,7 @@ const { JWT_SECRET } = require('../config')
 
 const localStrategy = new LocalStrategy((username, password, callback) => {
   let user
+  console.log('localStrategy')
   User.findOne({ username: username })
     .then(_user => {
       user = _user
@@ -20,6 +21,7 @@ const localStrategy = new LocalStrategy((username, password, callback) => {
           message: 'Incorrect username or password'
         })
       }
+      console.log(user.validatePassword(password))
       return user.validatePassword(password)
     })
     .then(isValid => {

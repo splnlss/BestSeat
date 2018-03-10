@@ -1,5 +1,6 @@
 let jwt
 
+//PAGE AJAX CALLS
 function getAllReviews (success, failure){
   const settings = {
     url: '/api/review',
@@ -58,6 +59,8 @@ function deleteReview (id, success, failure){
   $.ajax(settings)
 }
 
+// APP FUNCTIONS
+
 function renderReview(review) {
   return `<li><h3>${review.venue}</h3><button class="editReview" data-reviewid=${review.id}>Edit</button>
   <button class="deleteReview" data-reviewid=${review.id}>Delete</button>
@@ -106,9 +109,7 @@ function displayAddForm() {
 }
 
 function displayEditForm(review) {
-  $('main').html(
-    renderReviewForm(review)
-  )
+  $('main').html(renderReviewForm(review))
   $('#venueInput').val(review.venue)
   $('#reviewInput').val(review.chairReview)
   $('#userNameInput').val(review.userName)
@@ -128,18 +129,6 @@ function displaySearchForm() {
   $(`main`).html(
     renderSearchForm()
   )
-}
-
-function setupUIHandlers() {
-  $('header').on('click', '#addForm', displayAddForm)
-  $('header').on('click', '#loginForm', displayLoginForm)
-  $('main').on('submit', '#userLogin', handleUserLoginSubmit)
-  $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
-  $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
-  $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
-  $('main').on('click', '#cancelForm', getAndDisplayNewReviews)
-  $('main').on('click', '.editReview', handleEditReview)
-  $('main').on('click', '.deleteReview', handleDeleteReview)
 }
 
 function handleEditReview(event){
@@ -187,19 +176,32 @@ function handleApiError(err){
   console.error(err)
 }
 
-//login
+//LOGIN
 
 function displayLoginForm(){
   $('main').html(
     renderLoginForm()
-  )
-}
+  )}
+
+  function displayNewUserForm(){
+    $('main').html(
+      renderNewUserForm()
+    )}
 
 function renderLoginForm(){
   return `<form id="userLogin">
     <label for="userName">UserName:</label>
     <input type="text" id="userNameInput" name="userName"> </input>
     <label for="userPassword">Password:</label>
+    <input type="text" id="userPasswordInput" name="userPassword"></input>
+    <input type="submit"></input>
+  </form>`
+}
+function renderNewUserForm(){
+  return `<form id="newUserLogin">
+    <label for="userName">New Username:</label>
+    <input type="text" id="userNameInput" name="userName"> </input>
+    <label for="userPassword">New Password:</label>
     <input type="text" id="userPasswordInput" name="userPassword"></input>
     <input type="submit"></input>
   </form>`
@@ -214,7 +216,24 @@ function postUserLogin(userData, success, failure){
     dataType: 'json',
     success: function(data){
       jwt = data.authToken
-      console.log(atob(jwt))
+      console.log(`jwt:${jwt}`)
+    //  console.log(atob(jwt))
+      success(data)
+    },
+    failure
+  }
+  $.ajax(settings)
+}
+
+function postNewUserLogin(userData, success, failure){
+  console.log(userData)
+  const settings = {
+    url: '/api/auth/login',
+    type: 'POST',
+    data: userData,
+    dataType: 'json',
+    success: function(data){
+
       success(data)
     },
     failure
@@ -231,10 +250,39 @@ function handleUserLoginSubmit(event) {
   postUserLogin(userLogin, getAndDisplayUserReviews, handleApiError)
 }
 
+function handleUserLoginSubmit(event) {
+  event.preventDefault()
+  const userLogin = {
+    username : $('#userNameInput').val(),
+    password : $('#userPasswordInput').val()
+  }
+  //change success to 'new user created'
+  postNewUserLogin(userLogin, getAndDisplayUserReviews, handleApiError)
+}
+
+
 function getAndDisplayUserReviews(){
 
 
 }
+
+//EVENT HANDLERS
+function setupUIHandlers() {
+  $('header').on('click', '#addForm', displayAddForm)
+  $('header').on('click', '#loginForm', displayLoginForm)
+  $('header').on('click', '#newUserForm', displayNewUserForm)
+  $('header').on('click', '#main', getAndDisplayNewReviews)
+  $('main').on('submit', '#userLogin', handleUserLoginSubmit)
+  $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
+  $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
+  $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
+  $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
+  $('main').on('click', '#cancelForm', getAndDisplayNewReviews)
+  $('main').on('click', '.editReview', handleEditReview)
+  $('main').on('click', '.deleteReview', handleDeleteReview)
+}
+
+//Fire up page
 
 $(function() {
   getAndDisplayNewReviews()
