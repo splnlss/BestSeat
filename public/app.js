@@ -250,14 +250,14 @@ function handleUserLoginSubmit(event) {
   postUserLogin(userLogin, getAndDisplayUserReviews, handleApiError)
 }
 
-function handleUserLoginSubmit(event) {
+function handleNewUserLoginSubmit(event) {
   event.preventDefault()
-  const userLogin = {
+  const newUserLogin = {
     username : $('#userNameInput').val(),
     password : $('#userPasswordInput').val()
   }
   //change success to 'new user created'
-  postNewUserLogin(userLogin, getAndDisplayUserReviews, handleApiError)
+  postNewUserLogin(newUserLogin, getAndDisplayUserReviews, handleApiError)
 }
 
 
