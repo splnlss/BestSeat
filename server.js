@@ -13,18 +13,27 @@ const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 // require models
 
 const app = express()
-
-passport.use(localStrategy)
-passport.use(jwtStrategy)
+let server
 
 app.use(morgan('common'))
 app.use(bodyParser.json())
 app.use(express.static('public'))
+
+passport.use(localStrategy)
+passport.use(jwtStrategy)
+
 app.use('/api/user', userRouter)
 app.use('/api/review/', reviewRouter)
 app.use('/api/auth/', authRouter)
 
-let server
+//middleware to recognize jwt
+const jwtAuth = passport.authenticate('jwt', { session: false })
+
+//route to find user by jwt
+app.post('/api/userSearch', jwtAuth, (req, res)=>{
+  console.log(req.user)
+  return req.user
+})
 
 function runServer(databaseURL = DATABASE_URL, port = PORT) {
   return new Promise((resolve, reject) => {

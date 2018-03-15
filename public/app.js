@@ -1,12 +1,18 @@
 let jwt
 
 //PAGE AJAX CALLS
-function getAllReviews (success, failure){
+function getAllReviews (success, failure, shouldDisplayAll=true){
   const settings = {
     url: '/api/review',
     type: 'GET',
     dataType: 'json',
     success,failure
+  }
+  if (jwt){
+    if (shouldDisplayAll){
+      settings.shouldDisplayAll = shouldDisplayAll
+    }
+    settings.headers = { Authorization: `Bearer ${jwt}` }
   }
   $.ajax(settings)
 }
@@ -17,6 +23,9 @@ function getReview (id, success, failure){
     type: 'GET',
     dataType: 'json',
     success,failure
+  }
+  if (jwt){
+  settings.headers = { Authorization: `Bearer ${jwt}` }
   }
   $.ajax(settings)
 }
@@ -30,6 +39,9 @@ function postReview (review, success, failure){
     dataType: 'json',
     contentType: 'application/json',
     success,failure
+  }
+  if (jwt){
+  settings.headers = { Authorization: `Bearer ${jwt}` }
   }
   $.ajax(settings)
 }
@@ -46,6 +58,9 @@ function putReview (review, success, failure){
     success,
     failure
   }
+  if (jwt){
+  settings.headers = { Authorization: `Bearer ${jwt}` }
+  }
   $.ajax(settings)
 }
 
@@ -56,14 +71,39 @@ function deleteReview (id, success, failure){
     dataType: 'json',
     success,failure
   }
+  if (jwt){
+  settings.headers = { Authorization: `Bearer ${jwt}` }
+  }
   $.ajax(settings)
 }
 
 // APP FUNCTIONS
 
+function displayHeader(){
+  $('header').html(
+    renderHeader()
+  )
+}
+
+function renderHeader(){
+  const mainLink = `<a id="main">Main</a>`
+  const addLink = `<a id="addForm">Add</a>`
+  const logInLink = `<a id="loginForm">Login</a>`
+  const newUserLink = `<a id="newUserForm">New User</a>`
+  const logOutLink = `<a id="logOut">Logout</a>`
+  const loggedIn = [mainLink, addLink, logOutLink]
+  const loggedOut = [mainLink, logInLink, newUserLink]
+  const links = jwt?loggedIn:loggedOut
+
+//terinary
+  return `<nav>${links.join(` / `)}</nav>`
+}
+
 function renderReview(review) {
-  return `<li><h3>${review.venue}</h3><button class="editReview" data-reviewid=${review.id}>Edit</button>
-  <button class="deleteReview" data-reviewid=${review.id}>Delete</button>
+const editReview = `<button class="editReview" data-reviewid=${review.id}>Edit</button>
+  <button class="deleteReview" data-reviewid=${review.id}>Delete</button>`
+  return `<li><h3>${review.venue}</h3>
+  ${jwt?editReview:""}
   <p>${review.chairReview}</p>
   </li>`
 }
@@ -79,7 +119,8 @@ function displayNewReviews(data) {
   )
 }
 
-function getAndDisplayNewReviews() {
+function getAndDisplayNewReviews(shouldDisplayAll) {
+  displayHeader()
   getAllReviews(displayNewReviews, function(err){
       console.log('error getting All Reviews')
     })
@@ -95,8 +136,6 @@ function renderReviewForm(review) {
     <input type="text" id="venueInput" name="venue"> </input>
     <label for="review">Chair Review:</label>
     <input type="text" id="reviewInput" name="chairReview"> </input>
-    <label for="userNameInput">UserName:</label>
-    <input type="text" id="userNameInput" name="userName"> </input>
     <input type="submit"></input>
   </form>
   <button id="cancelForm"> cancel</button>`
@@ -130,6 +169,7 @@ function displaySearchForm() {
     renderSearchForm()
   )
 }
+
 
 function handleEditReview(event){
   const reviewID = $(event.currentTarget).data().reviewid
@@ -183,11 +223,11 @@ function displayLoginForm(){
     renderLoginForm()
   )}
 
-  function displayNewUserForm(){
+function displayNewUserForm(){
     $('main').html(
       renderNewUserForm()
     )}
-
+//
 function renderLoginForm(){
   return `<form id="userLogin">
     <label for="userName">UserName:</label>
@@ -212,8 +252,9 @@ function postUserLogin(userData, success, failure){
   const settings = {
     url: '/api/auth/login',
     type: 'POST',
-    data: userData,
+    data: JSON.stringify(userData),
     dataType: 'json',
+    contentType: 'application/json',
     success: function(data){
       jwt = data.authToken
       console.log(`jwt:${jwt}`)
@@ -228,12 +269,13 @@ function postUserLogin(userData, success, failure){
 function postNewUserLogin(userData, success, failure){
   console.log(userData)
   const settings = {
-    url: '/api/auth/login',
+    url: '/api/user',
     type: 'POST',
-    data: userData,
+    data: JSON.stringify(userData),
     dataType: 'json',
+    contentType: 'application/json',
     success: function(data){
-
+      //run user.create
       success(data)
     },
     failure
@@ -247,7 +289,7 @@ function handleUserLoginSubmit(event) {
     username : $('#userNameInput').val(),
     password : $('#userPasswordInput').val()
   }
-  postUserLogin(userLogin, getAndDisplayUserReviews, handleApiError)
+  postUserLogin(userLogin, getAndDisplayNewReviews, handleApiError)
 }
 
 function handleNewUserLoginSubmit(event) {
@@ -257,13 +299,13 @@ function handleNewUserLoginSubmit(event) {
     password : $('#userPasswordInput').val()
   }
   //change success to 'new user created'
-  postNewUserLogin(newUserLogin, getAndDisplayUserReviews, handleApiError)
+  postNewUserLogin(newUserLogin, getAndDisplayNewReviews, handleApiError)
 }
 
-
-function getAndDisplayUserReviews(){
-
-
+function logOutUser(){
+  jwt = ""
+  getAndDisplayNewReviews()
+  console.log('logged out')
 }
 
 //EVENT HANDLERS
@@ -272,6 +314,8 @@ function setupUIHandlers() {
   $('header').on('click', '#loginForm', displayLoginForm)
   $('header').on('click', '#newUserForm', displayNewUserForm)
   $('header').on('click', '#main', getAndDisplayNewReviews)
+  $('header').on('click', '#logOut', logOutUser)
+  //$('header').on('clikc', #searchForm, displaySearchForm)
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
   $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
