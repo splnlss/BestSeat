@@ -13,8 +13,15 @@ const jwtAuth = passport.authenticate('jwt', {session: false})
 
 //get reviews
 router.get('/', (req, res) => {
-  ChairReview
-    .find()
+  let promise
+  if (req.query["searchTerm"]){
+    console.log(req.query["searchTerm"])
+    promise= ChairReview.find({venue:req.query["searchTerm"]})
+  }else{
+    console.log('no searchTerm')
+    promise = ChairReview.find()
+  }
+  promise
     .then(reviews => {
       res.json(reviews.map(review => review.serialize()))
     })

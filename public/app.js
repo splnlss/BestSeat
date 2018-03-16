@@ -1,16 +1,17 @@
 let jwt
 
 //PAGE AJAX CALLS
-function getAllReviews (success, failure, shouldDisplayAll=true){
+function getAllReviews (success, failure, searchTerm, shouldDisplayAll=true){
   const settings = {
-    url: '/api/review',
+    url: `/api/review${searchTerm?`?searchTerm=${searchTerm}`:""}`,
     type: 'GET',
     dataType: 'json',
+    data:{},
     success,failure
   }
   if (jwt){
     if (shouldDisplayAll){
-      settings.shouldDisplayAll = shouldDisplayAll
+      settings.data.shouldDisplayAll = shouldDisplayAll
     }
     settings.headers = { Authorization: `Bearer ${jwt}` }
   }
@@ -86,22 +87,24 @@ function displayHeader(){
 }
 
 function renderHeader(){
-  const mainLink = `<a id="main">Main</a>`
+  const titleLink = `<a id="title">Best Seat In The House</a>`
   const addLink = `<a id="addForm">Add</a>`
   const logInLink = `<a id="loginForm">Login</a>`
   const newUserLink = `<a id="newUserForm">New User</a>`
+  const searchLink = `<a id="searchForm">Search</a>`
   const logOutLink = `<a id="logOut">Logout</a>`
-  const loggedIn = [mainLink, addLink, logOutLink]
-  const loggedOut = [mainLink, logInLink, newUserLink]
+  const loggedIn = [addLink, searchLink, logOutLink]
+  const loggedOut = [searchLink, logInLink, newUserLink]
   const links = jwt?loggedIn:loggedOut
 
-//terinary
-  return `<nav>${links.join(` / `)}</nav>`
+  return `<h1>${titleLink}</h1>
+  <nav>${links.join(` / `)}</nav>`
 }
 
+//changed from button to a link
 function renderReview(review) {
-const editReview = `<button class="editReview" data-reviewid=${review.id}>Edit</button>
-  <button class="deleteReview" data-reviewid=${review.id}>Delete</button>`
+const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
+  <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
   return `<li><h3>${review.venue}</h3>
   ${jwt?editReview:""}
   <p>${review.chairReview}</p>
@@ -119,11 +122,12 @@ function displayNewReviews(data) {
   )
 }
 
-function getAndDisplayNewReviews(shouldDisplayAll) {
+function getAndDisplayNewReviews(searchTerm, shouldDisplayAll) {
   displayHeader()
   getAllReviews(displayNewReviews, function(err){
       console.log('error getting All Reviews')
-    })
+    },
+    searchTerm, shouldDisplayAll)
 }
 
 function renderReviewForm(review) {
@@ -155,8 +159,7 @@ function displayEditForm(review) {
 }
 
 function renderSearchForm() {
-  return ` <h2> Edit a review</h2>
-  <p> Enter venue search</p>
+  return ` <h2>Search By Venue</h2>
   	<form id="chairSearchForm">
     <label for="venue">Venue:</label>
     <input type="text" id="venueSearch" name="venueSearch"> </input>
@@ -198,13 +201,9 @@ function handleEditFormSubmit(event){
   putReview(review, getAndDisplayNewReviews, handleApiError)
 }
 
-function handleSearchFormSubmit(userName) {
+function handleSearchFormSubmit(event) {
   event.preventDefault()
-  const element = NEW_REVIEWS.newReviews.filter(function(review) {
-    return review.venue.toLowerCase().trim() == $('#venueSearch').val().toLowerCase()
-      .trim()
-  })
-  getAndDisplayNewReviews()
+  getAndDisplayNewReviews($('#venueSearch').val().trim())
 }
 
 function handleDeleteReview(event){
@@ -230,20 +229,21 @@ function displayNewUserForm(){
 //
 function renderLoginForm(){
   return `<form id="userLogin">
-    <label for="userName">UserName:</label>
-    <input type="text" id="userNameInput" name="userName"> </input>
-    <label for="userPassword">Password:</label>
-    <input type="text" id="userPasswordInput" name="userPassword"></input>
-    <input type="submit"></input>
+    <div>
+    <label for="userName">Username:</label>
+    <input type="text" id="userNameInput" name="userName"> </input></div>
+    <div><label for="userPassword">Password: </label>
+    <input type="text" id="userPasswordInput" name="userPassword"></input></div>
+    <div><input type="submit" value="login"></input></div>
   </form>`
 }
 function renderNewUserForm(){
   return `<form id="newUserLogin">
-    <label for="userName">New Username:</label>
-    <input type="text" id="userNameInput" name="userName"> </input>
-    <label for="userPassword">New Password:</label>
-    <input type="text" id="userPasswordInput" name="userPassword"></input>
-    <input type="submit"></input>
+    <label for="userName">Username:</label>
+    <input type="text" id="userNameInput" name="userName"> </input><br>
+    <label for="userPassword">Password: </label>
+    <input type="text" id="userPasswordInput" name="userPassword"></input><br>
+    <input type="submit" value="create user"></input>
   </form>`
 }
 
@@ -313,9 +313,9 @@ function setupUIHandlers() {
   $('header').on('click', '#addForm', displayAddForm)
   $('header').on('click', '#loginForm', displayLoginForm)
   $('header').on('click', '#newUserForm', displayNewUserForm)
-  $('header').on('click', '#main', getAndDisplayNewReviews)
+  $('header').on('click', '#title', getAndDisplayNewReviews)
   $('header').on('click', '#logOut', logOutUser)
-  //$('header').on('clikc', #searchForm, displaySearchForm)
+  $('header').on('click', '#searchForm', displaySearchForm)
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
   $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
