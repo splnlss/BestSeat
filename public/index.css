@@ -21,12 +21,13 @@ header{
   width: 100%;
   top: 0px;
   margin:0;
+  z-index:2000;
   position: fixed;
 }
 
 main{
   top: 100px;
-  width:80%;
+  width:70%;
   text-align: left;
   position: relative;
   margin-left:auto;
@@ -42,7 +43,7 @@ nav{
 h1{
   position: absolute;
   display: inline-block;
-  left: 10%;
+  left: 15%;
 }
 
 #loginForm #newUserForm{
@@ -53,11 +54,26 @@ h1{
   color: darkgrey;
   font-size: 12px;
 }
-
-#login{
-  display: inline-block
-  top:15px;
-  left:10%;
+#userNameInput, #userPasswordInput, #venueSearch, #venueInput{
+  margin-bottom: 10px;
+}
+#userNameInput{
+  margin-left: 14px;
+}
+#venueSearch, #userPasswordInput, #reviewInput{
+  margin-left: 18px;
+}
+#submit{
+  margin-left: 96px;
+}
+#login, #formButtons{
+  display: inline-block;
+  margin-top:10px;
+  left:15%;
+}
+#instructions{
+  color: red;
+  margin-top: 20px;
 }
 
 ul{
@@ -69,6 +85,7 @@ h1{
   font-size: 24px;
 }
 h3{
+  font-size: 18px;
   display: inline-block;
 }
 h4{

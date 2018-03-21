@@ -1,18 +1,22 @@
 let jwt
 
 //PAGE AJAX CALLS
-function getAllReviews (success, failure, searchTerm, shouldDisplayAll=true){
+function getAllReviews (success, failure){
   const settings = {
-    url: `/api/review${searchTerm?`?searchTerm=${searchTerm}`:""}`,
+    url: `/api/review`,
     type: 'GET',
     dataType: 'json',
     data:{},
-    success,failure
+    success: function(data){
+      if (data.length>0){
+        success(data)
+      }else{
+        failure()
+      }
+    },
+    failure
   }
   if (jwt){
-    if (shouldDisplayAll){
-      settings.data.shouldDisplayAll = shouldDisplayAll
-    }
     settings.headers = { Authorization: `Bearer ${jwt}` }
   }
   $.ajax(settings)
@@ -27,6 +31,27 @@ function getReview (id, success, failure){
   }
   if (jwt){
   settings.headers = { Authorization: `Bearer ${jwt}` }
+  }
+  $.ajax(settings)
+}
+
+function searchAndGetAllReviews (success, failure, searchTerm){
+  const settings = {
+    url: `/api/review?searchTerm=${searchTerm}`,
+    type: 'GET',
+    dataType: 'json',
+    data:{},
+    success: function(data){
+      if (data.length>0){
+        success(data)
+      }else{
+        failure()
+      }
+    },
+    failure
+  }
+  if (jwt){
+    settings.headers = { Authorization: `Bearer ${jwt}` }
   }
   $.ajax(settings)
 }
@@ -103,15 +128,22 @@ function renderHeader(){
 
 //changed from button to a link
 function renderReview(review) {
+console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
   return `<li><h3>${review.venue}</h3>
   ${jwt?editReview:""}
   <p>${review.chairReview}</p>
-  </li>`
+  </li>
+  <svg width="300" height="10" viewBox="0 0 300 10"
+    xmlns="http://www.w3.org/2000/svg">
+  <line x1="0" x2="300"
+      stroke-width="1" stroke="#af9b95"/>
+</svg>`
 }
 
 function renderReviews(reviews) {
+  console.log(reviews)
   return `<ul>${reviews.map(renderReview).join("\n")}</ul>`
 }
 
@@ -122,12 +154,15 @@ function displayNewReviews(data) {
   )
 }
 
-function getAndDisplayNewReviews(searchTerm, shouldDisplayAll) {
+function getAndDisplayNewReviews() {
   displayHeader()
-  getAllReviews(displayNewReviews, function(err){
-      console.log('error getting All Reviews')
-    },
-    searchTerm, shouldDisplayAll)
+  getAllReviews(displayNewReviews, noReviews)
+}
+
+function searchAndDisplayNewReviews(searchTerm){
+  displayHeader()
+  searchAndGetAllReviews(displayNewReviews, noSearchResults, searchTerm)
+
 }
 
 function renderReviewForm(review) {
@@ -136,13 +171,16 @@ function renderReviewForm(review) {
   return `<h2> Add a review</h2>
   <form id="${review?'chairEditForm':
     'chairAddForm'}"${review?reviewDataID:""}>
-    <label for="venue">Venue:</label>
-    <input type="text" id="venueInput" name="venue"> </input>
-    <label for="review">Chair Review:</label>
+    <div><label for="venue">Venue:</label>
+    <input type="text" id="venueInput" name="venue"> </input></div>
+    <div><label for="review">Chair Review:</label>
     <input type="text" id="reviewInput" name="chairReview"> </input>
-    <input type="submit"></input>
-  </form>
-  <button id="cancelForm"> cancel</button>`
+    </div>
+    <div id="formButtons">
+      <input type="button" id="cancel" value="cancel"></input>
+      <input type="submit" id="submit" value="submit review"></input>
+    </div>
+  </form>`
 }
 
 function displayAddForm() {
@@ -159,11 +197,14 @@ function displayEditForm(review) {
 }
 
 function renderSearchForm() {
-  return ` <h2>Search By Venue</h2>
+  return ` <h3>Search By Venue</h3>
   	<form id="chairSearchForm">
     <label for="venue">Venue:</label>
     <input type="text" id="venueSearch" name="venueSearch"> </input>
-    <input type="submit"></input>
+    <div>
+      <input type="button" id="cancel" value="cancel"></input>
+      <input type="submit" id="submit" value="search"></input>
+    </div>
   </form>  `
 }
 
@@ -173,6 +214,21 @@ function displaySearchForm() {
   )
 }
 
+function noSearchResults(){
+    $('main').append(`
+      <section role="region" id="instructions" aria-live="assertive">
+        <span> Venue Not Found. Please check spelling and try again. </span>
+      </section>
+      `)
+    //getAndDisplayNewReviews() //recursion
+    }
+  function noReviews(){
+        $('main').html(`
+          <section role="region" id="instructions" aria-live="assertive">
+            <span>No Reviews</span>
+          </section>
+          `)
+        }
 
 function handleEditReview(event){
   const reviewID = $(event.currentTarget).data().reviewid
@@ -203,7 +259,7 @@ function handleEditFormSubmit(event){
 
 function handleSearchFormSubmit(event) {
   event.preventDefault()
-  getAndDisplayNewReviews($('#venueSearch').val().trim())
+  searchAndDisplayNewReviews($('#venueSearch').val().trim())
 }
 
 function handleDeleteReview(event){
@@ -229,21 +285,29 @@ function displayNewUserForm(){
 //
 function renderLoginForm(){
   return `<form id="userLogin">
+    <h3>Login</h3>
     <div>
     <label for="userName">Username:</label>
     <input type="text" id="userNameInput" name="userName"> </input></div>
     <div><label for="userPassword">Password: </label>
     <input type="text" id="userPasswordInput" name="userPassword"></input></div>
-    <div><input type="submit" value="login"></input></div>
+    <div>
+    <input type="button" id="cancel" value="cancel"></input>
+    <input type="submit" id="submit" value="login"></input>
+    </div>
   </form>`
 }
 function renderNewUserForm(){
   return `<form id="newUserLogin">
+    <div><h3>Create New User</h3></div>
     <label for="userName">Username:</label>
     <input type="text" id="userNameInput" name="userName"> </input><br>
     <label for="userPassword">Password: </label>
-    <input type="text" id="userPasswordInput" name="userPassword"></input><br>
-    <input type="submit" value="create user"></input>
+    <input type="text" id="userPasswordInput" name="userPassword"></input>
+    <div>
+      <input type="button" id="cancel" value="cancel"></input>
+      <input type="submit" id="submit" value="create user"></input>
+    </div>
   </form>`
 }
 
@@ -321,6 +385,7 @@ function setupUIHandlers() {
   $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
   $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
   $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
+  $('main').on('click', '#cancel', getAndDisplayNewReviews)
   $('main').on('click', '#cancelForm', getAndDisplayNewReviews)
   $('main').on('click', '.editReview', handleEditReview)
   $('main').on('click', '.deleteReview', handleDeleteReview)

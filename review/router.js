@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
   let promise
   if (req.query["searchTerm"]){
     console.log(req.query["searchTerm"])
-    promise= ChairReview.find({venue:req.query["searchTerm"]})
+    promise= ChairReview.findByVenue(req.query["searchTerm"])
   }else{
     console.log('no searchTerm')
     promise = ChairReview.find()
