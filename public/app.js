@@ -131,11 +131,11 @@ function renderReview(review) {
 console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
-  return `<li><h3>${review.venue}</h3>
-  ${jwt?editReview:""}
-  <p>${review.chairReview}</p>
+  return `<li><ul><h3>${review.venue}</h3></ul>
+  <ul><span>${review.chairReview}</span></ul>
+  <ul>${jwt?editReview:""}</ul>
   </li>
-  <svg width="300" height="10" viewBox="0 0 300 10"
+  <svg width="250" height="1" viewBox="0 0 300 1"
     xmlns="http://www.w3.org/2000/svg">
   <line x1="0" x2="300"
       stroke-width="1" stroke="#af9b95"/>

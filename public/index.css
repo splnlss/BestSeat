@@ -4,7 +4,7 @@ body *{
 
 body{
   font-family: 'Open Sans', sans-serif;
-  font-size: 17;
+  font-size: 16px;
   font-weight: lighter;
   color: #af9b95;
   padding:0;
@@ -40,19 +40,12 @@ nav{
   right: 10%;
 }
 
-h1{
-  position: absolute;
-  display: inline-block;
-  left: 15%;
-}
-
 #loginForm #newUserForm{
   /* display: inline-block;
   text-align: right; */
 }
 .editReview, .deleteReview{
-  color: darkgrey;
-  font-size: 12px;
+  font-size: 10px;
 }
 #userNameInput, #userPasswordInput, #venueSearch, #venueInput{
   margin-bottom: 10px;
@@ -81,28 +74,57 @@ ul{
   padding-left: 0;
 }
 
+
 h1{
   font-size: 24px;
+  position: absolute;
+  display: inline-block;
+  left: 15%;
 }
+
 h3{
   font-size: 18px;
-  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 8px;
 }
+
 h4{
   font-size: 16px;
 }
 
-a:visited {
-  color: lightgrey;
+/* a:visited {
+  color: #7a3f2d;
+} */
+
+header.a:hover {
+    color: #af9b95;
+    text-decoration: none;
 }
 
 a:hover {
-    color: black;
-    /* text-decoration: underline; */
-}
-a:active {
-    color: black;
+    color: #7a3f2d;
+    text-decoration: none;
 }
 
+/* a:active {
+    color: black;
+} */
+
 @media only screen and (max-width: 640px) {
-}
+
+  main{
+    top: 70px;
+    width: 80%;
+  }
+  nav {
+    left: 10%;
+    top: 40px;
+  }
+  h1{
+    left: 10%;
+  }
+  h3{
+    font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 2px;
+  }
