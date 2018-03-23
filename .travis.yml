@@ -7,3 +7,5 @@ deploy:
   app: morning-citadel-10700
   on:
     repo: splnlss/BestSeat
+services:
+  - mongodb
