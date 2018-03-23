@@ -10,6 +10,10 @@ const {
   TEST_DATABASE_URL
 } = require('../config');
 
+let authToken
+const username = 'testUser'
+const password = '0000000000'
+
 const testData = [{
   venue: "McDonalds",
   chairReview: "Hard, plastic. The worst for a bad tailbone",
@@ -36,6 +40,11 @@ describe('/api/review', function(){
     const promises = testData.map(review => {
       ChairReview.create(review)
     })
+    .push(User.hashPassword(password).then(password =>
+      User.create({
+        username,
+        password
+      }))
     return Promise.all(promises)
       .then(() => {
       return runServer(TEST_DATABASE_URL)
@@ -43,6 +52,16 @@ describe('/api/review', function(){
   })
   after(function(){
     return closeServer()
+  })
+
+  beforeEach(function(){
+    return chai
+      .request(app)
+      .post('/api/auth/login')
+      .send({ username, password })
+      .then(function(res){
+        authToken = res.body.authToken
+      })
   })
 
   describe('GET endpoint', function() {
@@ -69,6 +88,7 @@ describe('/api/review', function(){
       }
       return chai.request(app)
       .post('/api/review')
+      .set('Authorization',`Bearer ${authToken}`)
       .send(newReview)
       .then(function(res){
         res.should.have.status(201)
@@ -104,6 +124,7 @@ describe('/api/review', function(){
           updateData.id = review.id
           return chai.request(app)
             .put(`/api/review/${review.id}`)
+            .set('Authorization',`Bearer ${authToken}`)
             .send(updateData)
         })
         .then(res => {
@@ -128,7 +149,7 @@ describe('/api/review', function(){
         .then(_review =>{
           review = _review
           //mising part...
-          return chai.request(app).delete(`/api/review/${review.id}`)
+          return chai.request(app).delete(`/api/review/${review.id}`).set('Authorization',`Bearer ${authToken}`)
         })
         then(res => {
           res.should.have.status(204);

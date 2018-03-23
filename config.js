@@ -6,5 +6,4 @@ exports.PORT = process.env.PORT || 8080
 exports.JWT_SECRET = process.env.JWT_SECRET || 'secret'
 exports.JWT_EXPIRY = process.env.JWT_EXPIRY || '7d'
 
-// mongodb://<admin>:<password27$$>@ds147228.mlab.com:47228/bestseat
 // should be in config heroku
