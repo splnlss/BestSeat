@@ -5,6 +5,7 @@ const faker = require('faker')
 const should = chai.should()
 
 const {ChairReview} = require('../review');
+const { User } = require('../user');
 const { closeServer, runServer, app } = require('../server');
 const {
   TEST_DATABASE_URL
@@ -37,20 +38,22 @@ chai.use(chaiHttp);
 describe('/api/review', function(){
 
   before(function(){
-    const promises = testData.map(review => {
-      ChairReview.create(review)
+    return runServer(TEST_DATABASE_URL)
+    .then(() =>{
+      return ChairReview.create(testData)
     })
-    .push(User.hashPassword(password).then(password =>
-      User.create({
+    .then(()=>{
+      return chai
+      .request(app)
+      .post('/api/user')
+      .send({
         username,
         password
-      }))
-    return Promise.all(promises)
-      .then(() => {
-      return runServer(TEST_DATABASE_URL)
+      })
     })
   })
   after(function(){
+    mongoose.connection.dropDatabase()
     return closeServer()
   })
 
@@ -58,7 +61,7 @@ describe('/api/review', function(){
     return chai
       .request(app)
       .post('/api/auth/login')
-      .send({ username, password })
+      .send({username, password})
       .then(function(res){
         authToken = res.body.authToken
       })
@@ -83,8 +86,7 @@ describe('/api/review', function(){
     it('should create new review', function(){
       const newReview = {
         venue: faker.company.companyName(),
-        chairReview: faker.lorem.text(),
-        userName: faker.internet.userName()
+        chairReview: faker.lorem.text()
       }
       return chai.request(app)
       .post('/api/review')
@@ -99,23 +101,21 @@ describe('/api/review', function(){
         res.body.id.should.not.be.null
         res.body.venue.should.equal(newReview.venue)
         res.body.chairReview.should.equal(newReview.chairReview)
-        res.body.userName.should.equal(newReview.userName)
         return ChairReview.findById(res.body.id)
       })
       .then(function(post){
         post.venue.should.equal(newReview.venue)
         post.chairReview.should.equal(newReview.chairReview)
-        post.userName.should.equal(newReview.userName)
       })
     })
-  })
+  }
+)
 
   describe('Put', function(){
     it('should update chairReview', function(){
       const updateData = {
         venue: 'Double R Diner',
-        chairReview: 'David Lynch would eat here but not sit here',
-        userName:'Norma Jennings'
+        chairReview: 'David Lynch would eat here but not sit here'
       }
       this.timeout(2000)
       return ChairReview
@@ -136,7 +136,6 @@ describe('/api/review', function(){
         .then(post => {
           post.venue.should.equal(updateData.venue)
           post.chairReview.should.equal(updateData.chairReview)
-          post.userName.should.equal(updateData.userName)
         })
     })
   })
