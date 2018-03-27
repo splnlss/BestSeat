@@ -1,6 +1,6 @@
 //remove direct link to pull from Heroku settings instead
 
-exports.DATABASE_URL = "mongodb://admin:password27@ds147228.mlab.com:47228/bestseat?authSource=admin"
+exports.DATABASE_URL = "mongodb://admin:password27@ds147228.mlab.com:47228/bestseat"
 //process.env.DATABASE_URL || 'mongodb://localhost/bestseat-app'
 
 exports.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL ||
