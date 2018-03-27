@@ -1,4 +1,4 @@
-exports.DATABASE_URL = process.env.MONGODB_URI || 'mongodb://localhost/bestseat-app'
+exports.DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost/bestseat-app'
 
 exports.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL ||
   'mongodb://localhost/test-bestseat-app'
