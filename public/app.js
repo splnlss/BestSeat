@@ -269,6 +269,7 @@ function handleDeleteReview(event){
 
 function handleApiError(err){
   console.error(err)
+  console.log('shit. that didnt work')
 }
 
 //LOGIN
@@ -325,8 +326,11 @@ function postUserLogin(userData, success, failure){
     //  console.log(atob(jwt))
       success(data)
     },
-    failure
-  }
+    failure: (error) => {
+      console.log(`error: ${error}`)
+      handleApiError()
+      }
+    }
   $.ajax(settings)
 }
 
@@ -342,7 +346,9 @@ function postNewUserLogin(userData, success, failure){
       //run user.create
       success(data)
     },
-    failure
+    failure: function(error){
+      console.log('New user not created. Please try again.')
+    }
   }
   $.ajax(settings)
 }
@@ -362,7 +368,7 @@ function handleNewUserLoginSubmit(event) {
     username : $('#userNameInput').val(),
     password : $('#userPasswordInput').val()
   }
-  //change success to 'new user created'
+  $("new user created").html
   postNewUserLogin(newUserLogin, getAndDisplayNewReviews, handleApiError)
 }
 

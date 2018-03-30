@@ -4,7 +4,7 @@ body *{
 
 body{
   font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: lighter;
   color: #af9b95;
   padding:0;
@@ -45,7 +45,7 @@ nav{
   text-align: right; */
 }
 .editReview, .deleteReview{
-  font-size: 10px;
+  font-size: 12px;
 }
 #userNameInput, #userPasswordInput, #venueSearch, #venueInput{
   margin-bottom: 10px;
@@ -76,25 +76,22 @@ ul{
 
 
 h1{
-  font-size: 24px;
+  font-size: 28px;
   position: absolute;
   display: inline-block;
   left: 15%;
 }
 
 h3{
-  font-size: 18px;
+  font-size: 22px;
   margin-top: 20px;
   margin-bottom: 8px;
 }
 
 h4{
-  font-size: 16px;
+  font-size: 18px;
 }
 
-/* a:visited {
-  color: #7a3f2d;
-} */
 
 header.a:hover {
     color: #af9b95;
@@ -105,10 +102,6 @@ a:hover {
     color: #7a3f2d;
     text-decoration: none;
 }
-
-/* a:active {
-    color: black;
-} */
 
 @media only screen and (max-width: 640px) {
 
@@ -124,7 +117,7 @@ a:hover {
     left: 10%;
   }
   h3{
-    font-size: 18px;
+    /* font-size: 20px; */
     margin-top: 5px;
     margin-bottom: 2px;
   }
