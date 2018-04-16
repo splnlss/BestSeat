@@ -13,8 +13,7 @@ function getAllReviews (success, failure){
       }else{
         failure()
       }
-    },
-    failure
+    }
   }
   if (jwt){
     settings.headers = { Authorization: `Bearer ${jwt}` }
@@ -47,8 +46,7 @@ function searchAndGetAllReviews (success, failure, searchTerm){
       }else{
         failure()
       }
-    },
-    failure
+    }
   }
   if (jwt){
     settings.headers = { Authorization: `Bearer ${jwt}` }
@@ -105,33 +103,33 @@ function deleteReview (id, success, failure){
 
 // APP FUNCTIONS
 
-function displayHeader(){
-  $('header').html(
-    renderHeader()
-  )
-}
+// function displayHeader(){
+//   $('header').html(
+//     renderHeader()
+//   )
+// }
 
-function renderHeader(){
-  const titleLink = `<a id="title">Best Seat In The House</a>`
-  const addLink = `<a id="addForm">Add</a>`
-  const logInLink = `<a id="loginForm">Login</a>`
-  const newUserLink = `<a id="newUserForm">New User</a>`
-  const searchLink = `<a id="searchForm">Search</a>`
-  const logOutLink = `<a id="logOut">Logout</a>`
-  const loggedIn = [addLink, searchLink, logOutLink]
-  const loggedOut = [searchLink, logInLink, newUserLink]
-  const links = jwt?loggedIn:loggedOut
-
-  return `<h1>${titleLink}</h1>
-  <nav>${links.join(` / `)}</nav>`
-}
+// function renderHeader(){
+//   const titleLink = `<a id="title">Best Seat In The House</a>`
+//   const addLink = `<a id="addForm">Add</a>`
+//   const logInLink = `<a id="loginForm">Login</a>`
+//   const newUserLink = `<a id="newUserForm">New User</a>`
+//   const searchLink = `<a id="searchForm">Search</a>`
+//   const logOutLink = `<a id="logOut">Logout</a>`
+//   const loggedIn = [addLink, searchLink, logOutLink]
+//   const loggedOut = [searchLink, logInLink, newUserLink]
+//   const links = jwt?loggedIn:loggedOut
+//
+//   return `<h1>${titleLink}</h1>
+//   <nav>${links.join(` / `)}</nav>`
+// }
 
 //changed from button to a link
 function renderReview(review) {
 console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
-  return `<li><ul><h3>${review.venue}</h3></ul>
+  return `<li><ul><h2>${review.venue}</h2></ul>
   <ul><span>${review.chairReview}</span></ul>
   <ul>${jwt?editReview:""}</ul>
   </li>
@@ -155,12 +153,10 @@ function displayNewReviews(data) {
 }
 
 function getAndDisplayNewReviews() {
-  displayHeader()
   getAllReviews(displayNewReviews, noReviews)
 }
 
 function searchAndDisplayNewReviews(searchTerm){
-  displayHeader()
   searchAndGetAllReviews(displayNewReviews, noSearchResults, searchTerm)
 
 }
@@ -172,9 +168,9 @@ function renderReviewForm(review) {
   <form id="${review?'chairEditForm':
     'chairAddForm'}"${review?reviewDataID:""}>
     <div><label for="venue">Venue:</label>
-    <input type="text" id="venueInput" name="venue"> </input></div>
+    <input type="text" id="venueInput" name="venue" placeholder="Enter venue name"> </input></div>
     <div><label for="review">Chair Review:</label>
-    <input type="text" id="reviewInput" name="chairReview"> </input>
+    <input type="text" id="reviewInput" name="chairReview" placeholder="Enter review"> </input>
     </div>
     <div id="formButtons">
       <input type="button" id="cancel" value="cancel"></input>
@@ -197,10 +193,10 @@ function displayEditForm(review) {
 }
 
 function renderSearchForm() {
-  return ` <h3>Search By Venue</h3>
+  return ` <h2>Search By Venue</h2>
   	<form id="chairSearchForm">
     <label for="venue">Venue:</label>
-    <input type="text" id="venueSearch" name="venueSearch"> </input>
+    <input type="text" id="venueSearch" name="venueSearch" placeholder="Enter venue name"> </input>
     <div>
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="search"></input>
@@ -275,6 +271,7 @@ function handleApiError(err){
 
 function displayLoginForm(){
   $('main').html(
+    // $('.login-form').toggle();
     renderLoginForm()
   )}
 
@@ -285,25 +282,28 @@ function displayNewUserForm(){
 //
 function renderLoginForm(){
   return `<form id="userLogin">
-    <h3>Login</h3>
+    <h2>Login</h2>
     <div>
-    <label for="userName">Username:</label>
-    <input type="text" id="userNameInput" name="userName"> </input></div>
-    <div><label for="userPassword">Password: </label>
-    <input type="text" id="userPasswordInput" name="userPassword"></input></div>
+      <label for="userName">Username:</label>
+      <input type="text" id="userNameInput" name="userName" placeholder="Enter username"> </input>
+    </div>
     <div>
-    <input type="button" id="cancel" value="cancel"></input>
-    <input type="submit" id="submit" value="login"></input>
+      <label for="userPassword">Password:</label>
+      <input type="password" id="userPasswordInput" name="userPassword" placeholder="Enter password"></input>
+    </div>
+    <div>
+      <input type="button" id="cancel" value="cancel"></input>
+      <input type="submit" id="submit" value="login"></input>
     </div>
   </form>`
 }
 function renderNewUserForm(){
   return `<form id="newUserLogin">
-    <div><h3>Create New User</h3></div>
+    <div><h2>Create New User</h2></div>
     <label for="userName">Username:</label>
-    <input type="text" id="userNameInput" name="userName"> </input><br>
+    <input type="text" id="userNameInput" name="userName" placeholder="Enter username"> </input><br>
     <label for="userPassword">Password: </label>
-    <input type="text" id="userPasswordInput" name="userPassword"></input>
+    <input type="text" id="userPasswordInput" name="userPassword" placeholder="Enter password"></input>
     <div>
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="create user"></input>
@@ -311,7 +311,7 @@ function renderNewUserForm(){
   </form>`
 }
 
-function postUserLogin(userData, success, failure){
+function postUserLogin(userData, success, userNotFound){
   console.log(userData)
   const settings = {
     url: '/api/auth/login',
@@ -324,11 +324,18 @@ function postUserLogin(userData, success, failure){
       console.log(`jwt:${jwt}`)
     //  console.log(atob(jwt))
       success(data)
-    },
-    failure
+    }
   }
   $.ajax(settings)
 }
+
+function userNotFound(){
+  $('main').append(`
+    <section role="region" id="instructions" aria-live="assertive">
+      <span>User or password not found. Please check spelling and try again.</span>
+    </section>
+    `)
+  }
 
 function postNewUserLogin(userData, success, failure){
   console.log(userData)
@@ -374,12 +381,15 @@ function logOutUser(){
 
 //EVENT HANDLERS
 function setupUIHandlers() {
-  $('header').on('click', '#addForm', displayAddForm)
-  $('header').on('click', '#loginForm', displayLoginForm)
-  $('header').on('click', '#newUserForm', displayNewUserForm)
-  $('header').on('click', '#title', getAndDisplayNewReviews)
-  $('header').on('click', '#logOut', logOutUser)
-  $('header').on('click', '#searchForm', displaySearchForm)
+  $('nav').on('click', '#addForm', displayAddForm)
+  $('nav').on('click', '#loginForm', displayLoginForm)
+  $('nav').on('click', '#newUserForm', displayNewUserForm)
+  $('nav').on('click', '#title', getAndDisplayNewReviews)
+  $('nav').on('click', '#logOut', logOutUser)
+  $('nav').on('click', '#searchForm', displaySearchForm)
+  $('.navbar-nav>li>a').on('click', function(){
+    $('.navbar-collapse').collapse('hide')
+  })
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
   $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
