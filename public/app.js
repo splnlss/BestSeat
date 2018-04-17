@@ -126,12 +126,18 @@ function deleteReview (id, success, failure){
 
 //changed from button to a link
 function renderReview(review) {
-console.log(review)
+// console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
-  return `<li><ul><h2>${review.venue}</h2></ul>
-  <ul><span>${review.chairReview}</span></ul>
-  <ul>${jwt?editReview:""}</ul>
+  return `<li>
+  <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="${review.imageURL}" alt="Card image cap">
+    <div class="card-body">
+      <ul><h2>${review.venue}</h2></ul>
+      <ul><span>${review.chairReview}</span></ul>
+      <ul>${jwt?editReview:""}</ul>
+    </div>
+  </div>
   </li>
   <svg width="250" height="1" viewBox="0 0 300 1"
     xmlns="http://www.w3.org/2000/svg">
@@ -172,6 +178,9 @@ function renderReviewForm(review) {
     <div><label for="review">Chair Review:</label>
     <input type="text" id="reviewInput" name="chairReview" placeholder="Enter review"> </input>
     </div>
+    <div><label for="imageURL">Add image URL</label>
+    <input type="url" id="imageInput" name="imageURL" placeholder="http://domain.com/image.jpg"> </input>
+    </div>
     <div id="formButtons">
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="submit review"></input>
@@ -189,6 +198,7 @@ function displayEditForm(review) {
   $('main').html(renderReviewForm(review))
   $('#venueInput').val(review.venue)
   $('#reviewInput').val(review.chairReview)
+  $('#imageInput').val(review.imageURL)
   $('#userNameInput').val(review.userName)
 }
 
@@ -236,6 +246,7 @@ function handleAddFormSubmit(event) {
   const review = {
     venue : $('#venueInput').val(),
     chairReview : $('#reviewInput').val(),
+    imageURL: $('imageInput').val(),
     userName : $('#userNameInput').val()
   }
   postReview(review, getAndDisplayNewReviews, handleApiError)
@@ -248,6 +259,7 @@ function handleEditFormSubmit(event){
     id:reviewID,
     venue : $('#venueInput').val(),
     chairReview : $('#reviewInput').val(),
+    imagrURL: $('imageInput').val(),
     userName : $('#userNameInput').val()
   }
   putReview(review, getAndDisplayNewReviews, handleApiError)
@@ -311,7 +323,7 @@ function renderNewUserForm(){
   </form>`
 }
 
-function postUserLogin(userData, success, userNotFound){
+function postUserLogin(userData, success, failure){
   console.log(userData)
   const settings = {
     url: '/api/auth/login',
@@ -324,12 +336,15 @@ function postUserLogin(userData, success, userNotFound){
       console.log(`jwt:${jwt}`)
     //  console.log(atob(jwt))
       success(data)
-    }
+    },
+//why is failure being called with succes as well??
+    failure: userNotFound()
   }
   $.ajax(settings)
 }
 
 function userNotFound(){
+  console.log('posting user error')
   $('main').append(`
     <section role="region" id="instructions" aria-live="assertive">
       <span>User or password not found. Please check spelling and try again.</span>
@@ -389,7 +404,7 @@ function setupUIHandlers() {
   $('nav').on('click', '#searchForm', displaySearchForm)
   $('.navbar-nav>li>a').on('click', function(){
     $('.navbar-collapse').collapse('hide')
-  })
+    })
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
   $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
