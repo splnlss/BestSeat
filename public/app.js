@@ -17,6 +17,7 @@ function getAllReviews (success, failure){
   }
   if (jwt){
     settings.headers = { Authorization: `Bearer ${jwt}` }
+
   }
   $.ajax(settings)
 }
@@ -55,14 +56,16 @@ function searchAndGetAllReviews (success, failure, searchTerm){
 }
 
 function postReview (review, success, failure){
-  console.log(review)
   const settings = {
     url: '/api/review',
     type: 'POST',
     data: JSON.stringify(review),
     dataType: 'json',
     contentType: 'application/json',
-    success,failure
+    success:function(data){
+      console.log(review)
+      getAndDisplayNewReviews()
+    },failure
   }
   if (jwt){
   settings.headers = { Authorization: `Bearer ${jwt}` }
@@ -72,14 +75,15 @@ function postReview (review, success, failure){
 
 function putReview (review, success, failure){
   console.log('put review')
-  console.log(review)
   const settings = {
     url: `/api/review/${review.id}`,
     type: 'PUT',
     data: JSON.stringify(review),
     dataType: 'json',
     contentType: 'application/json',
-    success,
+    success: function(data){
+      console.log(data)
+    },
     failure
   }
   if (jwt){
@@ -103,41 +107,69 @@ function deleteReview (id, success, failure){
 
 // APP FUNCTIONS
 
-// function displayHeader(){
-//   $('header').html(
-//     renderHeader()
-//   )
-// }
+function displayHeader(){
+  $('header').html(
+    renderHeader()
+  )
+}
 
-// function renderHeader(){
-//   const titleLink = `<a id="title">Best Seat In The House</a>`
-//   const addLink = `<a id="addForm">Add</a>`
-//   const logInLink = `<a id="loginForm">Login</a>`
-//   const newUserLink = `<a id="newUserForm">New User</a>`
-//   const searchLink = `<a id="searchForm">Search</a>`
-//   const logOutLink = `<a id="logOut">Logout</a>`
-//   const loggedIn = [addLink, searchLink, logOutLink]
-//   const loggedOut = [searchLink, logInLink, newUserLink]
-//   const links = jwt?loggedIn:loggedOut
-//
-//   return `<h1>${titleLink}</h1>
-//   <nav>${links.join(` / `)}</nav>`
-// }
+function renderHeader(){
+  // const titleLink = `<a id="title">Best Seat In The House</a>`
+  const addLink = `<a class="nav-link" href="#" id="addForm">Add</a>`
+  const logInLink = `<a class="nav-link" href="#" id="loginForm">Login</a>`
+  const newUserLink = `<a class="nav-link" href="#" id="newUserForm">New User</a>`
+  const searchLink = `<a class="nav-link" href="#" id="searchForm">Search</a>`
+  const logOutLink = `<a class="nav-link" href="#" id="logOut">Logout</a>`
+  const loggedIn = [addLink, logOutLink, searchLink]
+  const loggedOut = [logInLink, newUserLink, searchLink]
+  const links = jwt?loggedIn:loggedOut
+
+  const navLinks = function(){
+        links.forEach(function(link){
+          `<li class="nav-item">
+          ${link}
+          </li>`
+          return link
+          // return links.join("; ")
+        })
+        return `${links.join("")}`
+      }
+
+  const navBar = `<nav class="navbar fixed-top navbar-light navbar-expand-lg">
+    <a class="navbar-brand" id="title" href="#">Best Seat In The House </a>
+    <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+      ${navLinks()}
+      </ul>
+    </div>
+  </nav>`
+  // <h1>${titleLink}</h1>
+  // <nav>${links.join(` / `)}</nav>
+  // `
+  return navBar
+}
 
 //changed from button to a link
 function renderReview(review) {
-// console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
-  return `<li>
-  <div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="${review.imageURL}" alt="Card image cap">
-    <div class="card-body">
-      <ul><h2>${review.venue}</h2></ul>
-      <ul><span>${review.chairReview}</span></ul>
-      <ul>${jwt?editReview:""}</ul>
+  return `<li><ul>
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <img class="reviewIMG" src="${review.imageURL}" alt="venue image" width="250">
+      </div>
+      <div class="col-8">
+        <ul><h2>${review.venue}</h2></ul>
+        <ul><span>${review.chairReview}</span></ul>
+        <ul>${jwt?editReview:""}</ul>
+      </div>
     </div>
   </div>
+  </ul>
   </li>
   <svg width="250" height="1" viewBox="0 0 300 1"
     xmlns="http://www.w3.org/2000/svg">
@@ -152,19 +184,20 @@ function renderReviews(reviews) {
 }
 
 function displayNewReviews(data) {
-  console.log(data)
+
   $('main').html(
     renderReviews(data)//NEED TO SORT BY DATE!!
   )
 }
 
 function getAndDisplayNewReviews() {
+  displayHeader()
   getAllReviews(displayNewReviews, noReviews)
+  setupUIHandlers()
 }
 
 function searchAndDisplayNewReviews(searchTerm){
   searchAndGetAllReviews(displayNewReviews, noSearchResults, searchTerm)
-
 }
 
 function renderReviewForm(review) {
@@ -246,8 +279,7 @@ function handleAddFormSubmit(event) {
   const review = {
     venue : $('#venueInput').val(),
     chairReview : $('#reviewInput').val(),
-    imageURL: $('imageInput').val(),
-    userName : $('#userNameInput').val()
+    imageURL: $('#imageInput').val()
   }
   postReview(review, getAndDisplayNewReviews, handleApiError)
 }
@@ -259,9 +291,9 @@ function handleEditFormSubmit(event){
     id:reviewID,
     venue : $('#venueInput').val(),
     chairReview : $('#reviewInput').val(),
-    imagrURL: $('imageInput').val(),
-    userName : $('#userNameInput').val()
+    imageURL: $('#imageInput').val()
   }
+  console.log(review)
   putReview(review, getAndDisplayNewReviews, handleApiError)
 }
 
@@ -324,7 +356,6 @@ function renderNewUserForm(){
 }
 
 function postUserLogin(userData, success, failure){
-  console.log(userData)
   const settings = {
     url: '/api/auth/login',
     type: 'POST',
@@ -361,7 +392,6 @@ function postNewUserLogin(userData, success, failure){
     dataType: 'json',
     contentType: 'application/json',
     success: function(data){
-      //run user.create
       success(data)
     },
     failure
@@ -419,6 +449,7 @@ function setupUIHandlers() {
 //Fire up page
 
 $(function() {
+  //displayHeader()
   getAndDisplayNewReviews()
-  setupUIHandlers()
+//  setupUIHandlers()
 })
