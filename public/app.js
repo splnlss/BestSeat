@@ -105,6 +105,27 @@ function deleteReview (id, success, failure){
   $.ajax(settings)
 }
 
+// Yelp Search
+function searchYelp (searchRequest,success, failure){
+  console.log(searchRequest)
+  const settings = {
+    url:`https://api.yelp.com/businesses/search/${searchRequest}`,
+    type: 'GET',
+    dataType: 'json',
+    success,failure
+  }
+  $.ajax(settings)
+}
+
+const searchRequest = {
+  term:'Four Barrel Coffee',
+  location: 'san francisco, ca'
+};
+
+// function searchRequest (searchVenue,searchLocation){
+//
+// }
+
 // APP FUNCTIONS
 
 function displayHeader(){
@@ -160,7 +181,7 @@ const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <div class="container">
     <div class="row">
       <div class="col-4">
-        <img class="reviewIMG" src="${review.imageURL}" alt="venue image" width="250">
+        <img class="reviewIMG" src="${review.imageURL}" alt="venue image">
       </div>
       <div class="col-8">
         <ul><h2>${review.venue}</h2></ul>
@@ -232,7 +253,6 @@ function displayEditForm(review) {
   $('#venueInput').val(review.venue)
   $('#reviewInput').val(review.chairReview)
   $('#imageInput').val(review.imageURL)
-  $('#userNameInput').val(review.userName)
 }
 
 function renderSearchForm() {
@@ -431,7 +451,8 @@ function setupUIHandlers() {
   $('nav').on('click', '#newUserForm', displayNewUserForm)
   $('nav').on('click', '#title', getAndDisplayNewReviews)
   $('nav').on('click', '#logOut', logOutUser)
-  $('nav').on('click', '#searchForm', displaySearchForm)
+  $('nav').on('click', '#searchForm', searchYelp)
+  // displaySearchForm)
   $('.navbar-nav>li>a').on('click', function(){
     $('.navbar-collapse').collapse('hide')
     })
