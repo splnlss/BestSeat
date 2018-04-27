@@ -14,18 +14,14 @@ body{
   background-color: #ffffff;
 }
 
-.container{
-  padding: 0;
-  margin: 0;
-}
-
-/* header{ */
-.navbar{
+header{
   background-color: #e6a20e;
+  color: #ffffff;
   height: 60px;
   width: 100%;
   top: 0px;
   margin:0;
+  z-index:2000;
   position: fixed;
 }
 
@@ -39,34 +35,15 @@ main{
 }
 
 nav{
-    position: relative;
-    margin-left:auto;
-    margin-right:auto;
-    padding:0;
-    color: white;
-  }
-
-.navbar-light .navbar-brand{
-  color:white;
+  position: absolute;
+  top:20px;
+  right: 10%;
 }
 
-.navbar-light .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.9)' stroke-width='3' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+#loginForm #newUserForm{
+  /* display: inline-block;
+  text-align: right; */
 }
-
-/* can't get hambuger navbar to be on right side */
-
-.collapse{
-  /* position: relative; */
-  /* top: 5%;
-  right: 400px;
-  width: 20%;
-  padding-left: 5%; */
-  background-color: #e6a20e;
-  text-align: left;
-}
-
-
 .editReview, .deleteReview{
   font-size: 10px;
 }
@@ -115,39 +92,21 @@ h4{
   font-size: 16px;
 }
 
-::placeholder{
-  color: grey;
-  opacity:  0.4;
-}
-
-#title a{
-  color: white;
-}
-
-#navbarNav a{
-  color: white;
-}
-
-a:visited {
+/* a:visited {
   color: #7a3f2d;
-}
-
-#title a:hover, #navbarNav a:hover {
-    color: #7a3f2d;
-    text-decoration: none;
-}
-
-.reviewIMG {
-  width: 100%;
-  height: 100%;
-}
-
-/* a:hover {
-    color: #7a3f2d;
-    text-decoration: none;
 } */
 
- /* a:active {
+header.a:hover {
+    color: #af9b95;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #7a3f2d;
+    text-decoration: none;
+}
+
+/* a:active {
     color: black;
 } */
 
@@ -158,9 +117,8 @@ a:visited {
     width: 80%;
   }
   nav {
-    /* left: 10%; */
+    left: 10%;
     top: 40px;
-    width:100%;
   }
   h1{
     left: 10%;
