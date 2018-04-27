@@ -26,7 +26,7 @@ passport.use(jwtStrategy)
 app.use('/api/user', userRouter)
 app.use('/api/review/', reviewRouter)
 app.use('/api/auth/', authRouter)
-app.use('api/yelp/', yelpRouter)
+app.use('/api/yelp', yelpRouter)
 
 //middleware to recognize jwt
 const jwtAuth = passport.authenticate('jwt', { session: false })

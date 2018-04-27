@@ -106,21 +106,33 @@ function deleteReview (id, success, failure){
 }
 
 // Yelp Search
-function searchYelp (searchRequest,success, failure){
+function searchYelp (searchTerms, success, error){
   console.log(searchRequest)
+
   const settings = {
-    url:`https://api.yelp.com/businesses/search/${searchRequest}`,
+
+    url:`/api/yelp`,
     type: 'GET',
+    data: searchRequest,
     dataType: 'json',
-    success,failure
+    success,error
   }
   $.ajax(settings)
 }
 
 const searchRequest = {
-  term:'Four Barrel Coffee',
-  location: 'san francisco, ca'
+  term:'Joe Coffee',
+  location: '13th street, New York'
 };
+
+function displaySearchYelp(){
+      searchYelp(searchRequest,function (data,text){
+       console.log(arguments)
+        console.log(data,text)
+    })
+      // console.log(data)
+}
+
 
 // function searchRequest (searchVenue,searchLocation){
 //
@@ -158,10 +170,10 @@ function renderHeader(){
 
   const navBar = `<nav class="navbar fixed-top navbar-light navbar-expand-lg">
     <a class="navbar-brand" id="title" href="#">Best Seat In The House </a>
-    <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler " type="button" data-toggle="dropdown" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse dropdown-menu show dropdown-menu-right" id="navbarNav">
       <ul class="navbar-nav">
       ${navLinks()}
       </ul>
@@ -451,7 +463,7 @@ function setupUIHandlers() {
   $('nav').on('click', '#newUserForm', displayNewUserForm)
   $('nav').on('click', '#title', getAndDisplayNewReviews)
   $('nav').on('click', '#logOut', logOutUser)
-  $('nav').on('click', '#searchForm', searchYelp)
+  $('nav').on('click', '#searchForm', displaySearchYelp)
   // displaySearchForm)
   $('.navbar-nav>li>a').on('click', function(){
     $('.navbar-collapse').collapse('hide')
