@@ -15,30 +15,54 @@ body{
 }
 
 header{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
   background-color: #e6a20e;
   color: #ffffff;
-  height: 60px;
+  /* height: 60px;
   width: 100%;
   top: 0px;
   margin:0;
   z-index:2000;
-  position: fixed;
+  position: fixed; */
 }
 
 main{
-  top: 100px;
-  width:70%;
-  text-align: left;
-  position: relative;
-  margin-left:auto;
-  margin-right:auto;
+  padding: 10px;
+}
+.siteHeader__section {
+    display: flex;
+    align-items: center;
+  }
+
+.siteHeader__item {
+    padding: 5px 15px;
+    /* font-size: 12px; */
 }
 
-nav{
-  position: absolute;
-  top:20px;
-  right: 10%;
+.nav_menu{
+  display: flex;
+  flex-direction: row;
+  /*mobile: flex-direction: column; */
 }
+
+.nav_item{
+  padding-right: 10px;
+}
+
+ .review__section {
+    display: flex;
+    align-items: center;
+    /*mobile: flex-direction: column; */
+  }
+
+.review__item {
+      padding: 5px 15px;
+      font-style: bold;
+      /* font-size: 12px; */
+}
+
 
 #loginForm #newUserForm{
   /* display: inline-block;
@@ -77,15 +101,10 @@ ul{
 
 h1{
   font-size: 24px;
-  position: absolute;
-  display: inline-block;
-  left: 15%;
 }
 
 h3{
   font-size: 18px;
-  margin-top: 20px;
-  margin-bottom: 8px;
 }
 
 h4{
@@ -113,18 +132,20 @@ a:hover {
 @media only screen and (max-width: 640px) {
 
   main{
-    top: 70px;
-    width: 80%;
+    /* top: 70px;
+    width: 80%; */
   }
   nav {
-    left: 10%;
-    top: 40px;
   }
+
+  .siteHeader__item {
+      display: flex;
+      flex-direction: column;
+    }
+
   h1{
-    left: 10%;
+
   }
   h3{
     font-size: 18px;
-    margin-top: 5px;
-    margin-bottom: 2px;
   }

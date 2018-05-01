@@ -109,6 +109,11 @@ function displayHeader(){
   $('header').html(
     renderHeader()
   )
+  // setTimeout(() => {
+  //   $('#loginForm').click(() => {
+  //   alert('greuzzi');
+  //   });
+  // } , 0);
 }
 
 function renderHeader(){
@@ -122,20 +127,26 @@ function renderHeader(){
   const loggedOut = [searchLink, logInLink, newUserLink]
   const links = jwt?loggedIn:loggedOut
 
-  return `<h1>${titleLink}</h1>
-  <nav>${links.join(` / `)}</nav>`
+  return `<div class="siteHeader__section">
+  <h1>${titleLink}</h1></div>
+  <nav class="siteHeader__section nav_menu">${links.map(function (link) {
+    return `<div class="nav_item">${link}<div>`
+    }
+  ).join('  ')}
+  </div>`
 }
+//  /* <nav class="siteHeader__item">${links.join(` `)}</nav> */
 
 //changed from button to a link
 function renderReview(review) {
 console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
-  return `<img src="${review.imageURL}" height="100px" alt="Chair Review Image">
-  <li><ul><h3>${review.venue}</h3></ul>
+  return `<div class="review_section"> <img src="${review.imageURL}" height="100px" alt="Chair Review Image" class="review_item">
+  <li class="review_item"><ul><h3>${review.venue}</h3></ul>
   <ul><span>${review.chairReview}</span></ul>
   <ul>${jwt?editReview:""}</ul>
-  </li>
+  </li></div>
   <svg width="250" height="1" viewBox="0 0 300 1"
     xmlns="http://www.w3.org/2000/svg">
   <line x1="0" x2="300"
@@ -160,11 +171,30 @@ function getAndDisplayNewReviews() {
   getAllReviews(displayNewReviews, noReviews)
 }
 
+function getAndDisplayYelpResults(data,text){
+  displayHeader()
+  searchYelpAndGetAllReviews(renderReviewForm(data,text), noSearchResults)
+}
+
 function searchAndDisplayNewReviews(searchTerm){
   displayHeader()
   searchAndGetAllReviews(displayNewReviews, noSearchResults, searchTerm)
-
 }
+
+function searchYelpVenueForm(){
+  return `<h2> Add a review</h2>
+  <form id="searchYelpVenueForm">
+    <div><label for="venue">Search For Venue:</label>
+    <input type="text" id="venueInput" name="venue"> </input></div>
+    <div id="formButtons">
+      <input type="button" id="cancel" value="cancel"></input>
+      <input type="submit" id="chairAddFormSearch" value="search"></input>
+    </div>
+  </form>`
+}
+// <div><label for="location">Location</label>
+// <input type="text" id="locationInput" name="Location"> </input>
+// </div>
 
 function renderReviewForm(review) {
   const reviewDataID = review?`data-reviewid =${review.id}`:''
@@ -184,9 +214,10 @@ function renderReviewForm(review) {
   </form>`
 }
 
+
 function displayAddForm() {
   $('main').html(
-    renderReviewForm()
+    searchYelpVenueForm()
   )
 }
 
@@ -223,7 +254,7 @@ function noSearchResults(){
       `)
     //getAndDisplayNewReviews() //recursion
     }
-  function noReviews(){
+function noReviews(){
         $('main').html(`
           <section role="region" id="instructions" aria-live="assertive">
             <span>No Reviews</span>
@@ -236,15 +267,28 @@ function handleEditReview(event){
   getReview(reviewID, displayEditForm,handleApiError)
 }
 
+function handleAddFormSearch(event) {
+  event.preventDefault()
+  console.log('chairAddFormSearch')
+  const review = {
+    venue : $('#venueInput').val(),
+    // chairReview : $('#reviewInput').val(),
+    userName : $('#userNameInput').val()
+  }
+  console.log(review)
+  //send to yelp
+  searchYelp(review, getAndDisplayYelpResults(data,text), handleApiError)
+}
+
 function handleAddFormSubmit(event) {
   event.preventDefault()
   const review = {
-    venue : $('#venueInput').val(),
     chairReview : $('#reviewInput').val(),
     userName : $('#userNameInput').val()
   }
   postReview(review, getAndDisplayNewReviews, handleApiError)
 }
+
 
 function handleEditFormSubmit(event){
   event.preventDefault()
@@ -374,7 +418,12 @@ function logOutUser(){
 }
 
 // Yelp Search
-function searchYelp (searchTerms, success, error){
+function searchYelp (searchTerm, success, error){
+  const searchRequest = {
+    term: searchTerm.venue,
+    location: 'New York, NY'
+  };
+
   console.log(searchRequest)
 
   const settings = {
@@ -387,11 +436,6 @@ function searchYelp (searchTerms, success, error){
   }
   $.ajax(settings)
 }
-
-const searchRequest = {
-  term:'Joe Coffee',
-  location: 'New York, NY'
-};
 
 function displaySearchYelp(){
       searchYelp(searchRequest,function (data,text){
@@ -412,6 +456,7 @@ function setupUIHandlers() {
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
   $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
+  $('main').on('submit', '#chairAddFormSearch', handleAddFormSearch)
   $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
   $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
   $('main').on('click', '#cancel', getAndDisplayNewReviews)
