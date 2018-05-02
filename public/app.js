@@ -129,15 +129,32 @@ function renderHeader(){
 
   return `<div class="siteHeader__section">
   <h1>${titleLink}</h1></div>
-  <nav class="siteHeader__section nav_menu">${links.map(function (link) {
+  <nav class="siteHeader__section nav_menu">
+  <div class="mobileView">
+    ${links.map(function (link) {
     return `<div class="nav_item">${link}<div>`
-    }
-  ).join('  ')}
-  </div>`
+    }).join('  ')}
+  </div>
+  <button class="hamburger hamburger--collapse is-active" type="button">
+    <span class="hamburger-spin">
+      <span class="hamburger-inner"></span>
+
+        ${links.map(function (link) {
+        return `<div class="nav_item">${link}<div>`
+        }).join('  ')}
+
+  </span>
+</button></nav>`
 }
 //  /* <nav class="siteHeader__item">${links.join(` `)}</nav> */
 
 //changed from button to a link
+
+function openHamburger(){
+    hamburger.classList.toggle("is-active");
+}
+
+
 function renderReview(review) {
 console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
@@ -219,6 +236,10 @@ function displayAddForm() {
   $('main').html(
     searchYelpVenueForm()
   )
+  setTimeout(function (){
+    $('main').on('submit', '#chairAddFormSearch', handleAddFormSubmit)
+    //'#chairAddForm', handleAddFormSubmit) renderReviewForm
+  },0)
 }
 
 function displayEditForm(review) {
@@ -267,7 +288,7 @@ function handleEditReview(event){
   getReview(reviewID, displayEditForm,handleApiError)
 }
 
-function handleAddFormSearch(event) {
+function menu(event) {
   event.preventDefault()
   console.log('chairAddFormSearch')
   const review = {
@@ -277,7 +298,7 @@ function handleAddFormSearch(event) {
   }
   console.log(review)
   //send to yelp
-  searchYelp(review, getAndDisplayYelpResults(data,text), handleApiError)
+  searchYelp(review, getAndDisplayYelpResults, handleApiError)
 }
 
 function handleAddFormSubmit(event) {
@@ -453,11 +474,12 @@ function setupUIHandlers() {
   $('header').on('click', '#title', getAndDisplayNewReviews)
   $('header').on('click', '#logOut', logOutUser)
   $('header').on('click', '#searchForm', displaySearchForm)
+  $('heaer').on('click', '.hamburger', openHamburger)
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
   $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
-  $('main').on('submit', '#chairAddFormSearch', handleAddFormSearch)
-  $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
+  $('main').on('submit', '#chairAddFormSearch', searchYelpVenueForm)
+//  $('main').on('submit',
   $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
   $('main').on('click', '#cancel', getAndDisplayNewReviews)
   $('main').on('click', '#cancelForm', getAndDisplayNewReviews)

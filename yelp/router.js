@@ -23,9 +23,10 @@ router.get('/', (req, res) =>{
     const prettyJson = JSON.stringify(firstResult, null, 4);
     res.send(prettyJson);
   })
-  .catch(e => {
-    console.log(e);
-  });
+  .catch(err => {
+    console.error(err)
+    res.status(500).json({ error: 'error getting yelp results' })
+  })
 })
 
 module.exports = {router}

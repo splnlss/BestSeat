@@ -28,9 +28,19 @@ header{
   position: fixed; */
 }
 
+nav {
+  display: flex;
+  flex-direction: row;
+}
+
 main{
   padding: 10px;
 }
+
+.hamburger{
+  visibility: hidden;
+}
+
 .siteHeader__section {
     display: flex;
     align-items: center;
@@ -135,7 +145,14 @@ a:hover {
     /* top: 70px;
     width: 80%; */
   }
+
   nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+.hamburger{
+    visibility:visible;
   }
 
   .siteHeader__item {
