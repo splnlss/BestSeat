@@ -2,6 +2,13 @@ body *{
   box-sizing: border-box;
 }
 
+.wrapper {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 10% 20% 40% 20% 10%;
+    grid-template-rows: 50px 20% 20% 20% auto;
+    }
+
 body{
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -15,30 +22,29 @@ body{
 }
 
 header{
+  grid-column: 1 / 6;
+  grid-row: 1 / 1;
+  background-color: #e6a20e;
+}
+
+.headerContainer{
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  background-color: #e6a20e;
+  width: 80%;
+  margin-left: 10%;
   color: #ffffff;
-  /* height: 60px;
-  width: 100%;
-  top: 0px;
-  margin:0;
-  z-index:2000;
-  position: fixed; */
 }
 
 nav {
   display: flex;
   flex-direction: row;
+  background-color: #e6a20e;
 }
 
 main{
-  padding: 10px;
-}
-
-.hamburger{
-  visibility: hidden;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .siteHeader__section {
@@ -47,32 +53,51 @@ main{
   }
 
 .siteHeader__item {
-    padding: 5px 15px;
+  display: flex;
+  /* flex-direction: row;
+  padding: 5px 15px; */
     /* font-size: 12px; */
 }
 
 .nav_menu{
-  display: flex;
-  flex-direction: row;
+  display: block;
+
   /*mobile: flex-direction: column; */
 }
 
 .nav_item{
-  padding-right: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 15px;
+  /* padding-right: 10px; */
 }
 
- .review__section {
+.review__section {
+    display: grid;
+    grid-column: auto auto;
+    grid-row: 30% auto;
     display: flex;
     align-items: center;
     /*mobile: flex-direction: column; */
-  }
+}
 
 .review__item {
+
       padding: 5px 15px;
       font-style: bold;
       /* font-size: 12px; */
 }
 
+.hamburger{
+  visibility: hidden;
+}
+
+.navDropDown{
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+}
 
 #loginForm #newUserForm{
   /* display: inline-block;
@@ -140,22 +165,42 @@ a:hover {
 } */
 
 @media only screen and (max-width: 640px) {
+  .headerContainer{
+    width:90%;
+    margin-left:auto;
+    margin-right: auto;
+  }
 
   main{
+    width:90%;
+    margin-left:auto;
+    margin-right: auto;
     /* top: 70px;
     width: 80%; */
   }
 
   nav {
-    display: flex;
-    flex-direction: column;
-  }
 
+  }
+.nav_item{
+    display: flex;
+    width:100px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5px 0 0 0;
+    order: 10;
+  }
 .hamburger{
     visibility:visible;
+    order:1;
   }
-
-  .siteHeader__item {
+.siteHeader__section{
+  display: flex;
+  flex-direction: column;
+  flex-flow: flex-start;
+  /* padding:5px 15px; */
+}
+.siteHeader__item {
       display: flex;
       flex-direction: column;
     }

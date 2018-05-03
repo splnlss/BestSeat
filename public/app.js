@@ -127,24 +127,29 @@ function renderHeader(){
   const loggedOut = [searchLink, logInLink, newUserLink]
   const links = jwt?loggedIn:loggedOut
 
-  return `<div class="siteHeader__section">
+  // const mainNav = `<nav class="siteHeader__section nav_menu">
+  //                 ${links.map(function (link) {
+  //                 return `<div class="nav_item">${link}<div>`})
+  //                         .join('  ')}
+  //                 </nav>`
+
+  return `<div class="headerContainer">
+  <div class="siteHeader__section">
   <h1>${titleLink}</h1></div>
-  <nav class="siteHeader__section nav_menu">
-  <div class="mobileView">
-    ${links.map(function (link) {
-    return `<div class="nav_item">${link}<div>`
-    }).join('  ')}
-  </div>
-  <button class="hamburger hamburger--collapse is-active" type="button">
-    <span class="hamburger-spin">
-      <span class="hamburger-inner"></span>
+  <div class="siteHeader__section">
+                    <button class="hamburger hamburger--collapse is-active" type="button">
+                        <span class="hamburger-spin">
+                          <span class="hamburger-inner">
+                          </span>
+                        </span>
+                    </button>
 
-        ${links.map(function (link) {
-        return `<div class="nav_item">${link}<div>`
-        }).join('  ')}
-
-  </span>
-</button></nav>`
+                  <nav class="nav_menu">
+                    ${links.map(function (link) {
+                      return `<div class="nav_item">${link}<div>`})
+                              .join('  ')}
+                  </nav>
+                  </div></div>`
 }
 //  /* <nav class="siteHeader__item">${links.join(` `)}</nav> */
 
