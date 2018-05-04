@@ -164,8 +164,8 @@ function renderReview(review) {
 console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
-  return `<div class="review_section"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image">
-  <ul class="review__text"><li class="review_item"><h3>${review.venue}</h3></li>
+  return `<div class="review_section"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped">
+  <ul class="review__text review_section"><li class="review_item"><h3>${review.venue}</h3></li>
   <li class="review_item">${jwt?editReview:""}</li>
   <li class="review_item"><span>${review.chairReview}</span></li></ul
   </div>
@@ -179,17 +179,18 @@ const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
 function renderYelpReviewForm(data) {
 console.log(data)
   return `<div class="review_section">
-  <img src="${data.image_url}" alt="Chair Review Image" class="review_image">
   <form id="chairAddForm'>
-  <ul><li class="review_item"><h3>${data.name}</h3></li>
-  <li class="review_item"><label for="address">Address: </label>${data.location.address1}, ${data.location.city}, ${data.location.zip_code}</li>
-  <li class="review_item"><label for="review">Chair Review:</label>
-  <input type="text" id="reviewInput" name="chairReview"></input></li></ul>
-  </li>
+  <img src="${data.image_url}" alt="Chair Review Image" class="review_image centered-and-cropped">
+  <ul>
+    <li class="review_item" for="venue"><h3>${data.name}</h3></li>
+    <li class="review_item"><label for="address">Address: </label>${data.location.address1}, ${data.location.city}, ${data.location.zip_code}</li>
+    <li class="review_item"><label for="review">Chair Review:</label>
+    <input type="text" id="reviewInput" name="chairReview"></input></li>
+  </ul>
   <div id="formButtons">
     <input type="button" id="cancel" value="cancel"></input>
     <input type="submit" id="chairEditForm" value="submit review"></input>
-  </div></form>
+  </form>
   </div> `
 }
 
@@ -248,7 +249,7 @@ function renderReviewForm(review) {
   <form id="${review?'chairEditForm':
     'chairAddForm'}"${review?reviewDataID:""}>
     <div><label for="venue">Venue:</label>
-    <input type="text" id="venueInput" name="venue"> </input></div>
+    <input type="text" id="venueInput" name="venue"></input></div>
     <div><label for="review">Chair Review:</label>
     <input type="text" id="reviewInput" name="chairReview"> </input>
     </div>
@@ -330,6 +331,7 @@ function handleAddFormYelpSubmit(event) {
 }
 
 function handleAddFormSubmit(event) {
+  console.log('submit yelp & review : handleAddFormSubmit')
   event.preventDefault()
   const review = {
     chairReview : $('#reviewInput').val(),
@@ -340,6 +342,7 @@ function handleAddFormSubmit(event) {
 
 
 function handleEditFormSubmit(event){
+  console.log('submit chairEditForm')
   event.preventDefault()
   const reviewID = $(event.currentTarget).data().reviewid
   const review = {
@@ -419,7 +422,7 @@ function postUserLogin(userData, success, failure){
     //  console.log(atob(jwt))
       success(data)
     },
-    failure
+    failure: noUserFoundError()
   }
   $.ajax(settings)
 }
@@ -447,7 +450,7 @@ function handleUserLoginSubmit(event) {
     username : $('#userNameInput').val(),
     password : $('#userPasswordInput').val()
   }
-  postUserLogin(userLogin, getAndDisplayNewReviews, handleApiError)
+  postUserLogin(userLogin, getAndDisplayNewReviews, noUserFoundError)
 }
 
 function handleNewUserLoginSubmit(event) {
@@ -465,6 +468,14 @@ function logOutUser(){
   getAndDisplayNewReviews()
   console.log('logged out')
 }
+
+function noUserFoundError(){
+    $('main').append(`
+      <section role="region" id="instructions" aria-live="assertive">
+        <span> Username and/or password is incorrect. Please try again. </span>
+      </section>
+      `)
+    }
 
 // Yelp Search
 function searchYelp (searchTerm, success, error){
@@ -485,13 +496,13 @@ function searchYelp (searchTerm, success, error){
   $.ajax(settings)
 }
 
-function displaySearchYelp(){
-      searchYelp(searchRequest,function (data,text){
-       console.log(arguments)
-        console.log(data,text)
-    })
-      // console.log(data)
-}
+// function displaySearchYelp(){
+//       searchYelp(searchRequest,function (data,text){
+//        console.log(arguments)
+//         console.log(data,text)
+//     })
+//       // console.log(data)
+// }
 
 //EVENT HANDLERS
 function setupUIHandlers() {

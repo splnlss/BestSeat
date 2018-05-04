@@ -2,13 +2,6 @@ body *{
   box-sizing: border-box;
 }
 
-/* .wrapper {
-    display: grid;
-    grid-gap: 0px;
-    grid-template-columns: 10% 20% 40% 20% 10%;
-    grid-template-rows: 50px 20% 20% 20% auto;
-    } */
-
 body{
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -22,8 +15,6 @@ body{
 }
 
 header{
-  /* grid-column: 1 / 6;
-  grid-row: 1 / 1; */
   background-color: #e6a20e;
 }
 
@@ -75,28 +66,30 @@ main {
 .review__section {
     width: auto;
     height: 150px;
-    display:inline-block;
+    display:inline;
     /*mobile: flex-direction: column; */
 }
 img.review_image{
-  width: 20%;
-  height: 150px;
+
+}
+
+img.centered-and-cropped {
+  object-fit: cover;
+  width: 200px;
+  height:200px;
+  border-radius:10%;
 }
 .review__image {
-
+  width: 200px;
 }
 
 .review__text{
-    padding-left: 50px;
+    padding-left: 5%;
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 70%;
     float: right;
-    /* position:relative;
-      right:100px;
-      padding: 5px 15px;
-      font-style: bold; */
-      /* font-size: 12px; */
+
 }
 .review__item{
 
@@ -181,23 +174,24 @@ a:hover {
 } */
 
 @media only screen and (max-width: 640px) {
+
   .headerContainer{
-    width:90%;
-    margin-left:auto;
-    margin-right: auto;
+      width:90%;
+      margin-left:auto;
+      margin-right: auto;
   }
 
   main{
-    width:90%;
-    margin-left:auto;
-    margin-right: auto;
-    /* top: 70px;
-    width: 80%; */
+      width:90%;
+      margin-left:auto;
+      margin-right: auto;
+      /* top: 70px;
+      width: 80%; */
   }
 
   nav {
-
   }
+
 .nav_item{
     display: flex;
     width:100px;
@@ -219,11 +213,19 @@ a:hover {
 .siteHeader__item {
       display: flex;
       flex-direction: column;
-    }
+}
 
-  h1{
+img.review_image{
+  height: 100px;
+}
 
-  }
+img.centered-and-cropped {
+  width: 100px;
+  height:100px;
+}
+h1{
+
+}
   h3{
     font-size: 18px;
   }
