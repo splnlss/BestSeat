@@ -137,17 +137,19 @@ function renderHeader(){
   <div class="siteHeader__section">
   <h1>${titleLink}</h1></div>
   <div class="siteHeader__section">
-                    <button class="hamburger hamburger--collapse is-active" type="button">
-                        <span class="hamburger-spin">
-                          <span class="hamburger-inner">
-                          </span>
+                  <button class="hamburger hamburger--collapse nav_item" type="button">
+                      <span class="hamburger-spin">
+                        <span class="hamburger-inner">
                         </span>
-                    </button>
-
-                  <nav class="nav_menu">
+                      </span>
+                  </button>
+                  <nav class="nav_menu hidden">
+                    <div class="">
                     ${links.map(function (link) {
                       return `<div class="nav_item">${link}<div>`})
-                              .join('  ')}
+                              .join('  ')
+                            }
+                    </div>
                   </nav>
                   </div></div>`
 }
@@ -164,10 +166,13 @@ function renderReview(review) {
 console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
-  return `<div class="review_section"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped">
-  <ul class="review__text review_section"><li class="review_item"><h3>${review.venue}</h3></li>
-  <li class="review_item">${jwt?editReview:""}</li>
-  <li class="review_item"><span>${review.chairReview}</span></li></ul
+
+  return `<div class="review_container"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped">
+    <ul class="review__text">
+      <li class="review_item"><h3>${review.venue}</h3></li>
+      <li class="review_item">${jwt?editReview:""}</li>
+      <li class="review_item"><span>${review.chairReview}</span></li>
+    </ul>
   </div>
   <svg width="250" height="1" viewBox="0 0 300 1"
     xmlns="http://www.w3.org/2000/svg">
@@ -178,20 +183,27 @@ const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
 
 function renderYelpReviewForm(data) {
 console.log(data)
-  return `<div class="review_section">
-  <form id="chairAddForm'>
+  return `<div class="review_container">
   <img src="${data.image_url}" alt="Chair Review Image" class="review_image centered-and-cropped">
+  <form id="chairAddForm'>
   <ul>
-    <li class="review_item" for="venue"><h3>${data.name}</h3></li>
-    <li class="review_item"><label for="address">Address: </label>${data.location.address1}, ${data.location.city}, ${data.location.zip_code}</li>
+    <li class="review_item"><label for="venue">Venue:</label>
+    <input type="text" id="venueInput" name="venue" value="${data.name}"></li>
+
+    <li class="review_item"><label for="address">Address:</label>
+    <input type="text" id="addressInput" name="address" value="${data.location.address1}, ${data.location.city}, ${data.location.zip_code}"></li>
+
     <li class="review_item"><label for="review">Chair Review:</label>
-    <input type="text" id="reviewInput" name="chairReview"></input></li>
+    <textarea type="text" id="reviewInput" name="chairReview" rows="10" cols="50"></textarea></li>
+
+    <li><label for="url" class="review_item">Image URL</label>
+    <input type="text" id="image_url" name="image_url" value="${data.image_url}"></li>
   </ul>
   <div id="formButtons">
     <input type="button" id="cancel" value="cancel"></input>
-    <input type="submit" id="chairEditForm" value="submit review"></input>
+    <input type="submit" id="submit_chairAddForm" value="submit review"></input>
   </form>
-  </div> `
+  </div>`
 }
 
 function renderReviews(reviews) {
@@ -207,6 +219,7 @@ function displayNewReviews(data) {
 }
 
 function getAndDisplayNewReviews() {
+  console.log('getAndDisplayNewReviews')
   displayHeader()
   getAllReviews(displayNewReviews, noReviews)
 }
@@ -215,7 +228,9 @@ function getAndDisplayYelpResults(data,text){
   console.log(data)
   $('main').html(
   renderYelpReviewForm(data))
-  // , noSearchResults)
+  setTimeout(function (){
+      $('main').on('click', '#submit_chairAddForm', handleAddFormSubmit)
+  },0)
 }
 
 function searchAndDisplayNewReviews(searchTerm){
@@ -224,40 +239,35 @@ function searchAndDisplayNewReviews(searchTerm){
 }
 
 function searchYelpVenueForm(){
-  return `<h2> Add a review</h2>
+  return `<div class="form_container">
+  <h2> Add a review</h2>
   <form id="searchYelpVenueForm">
     <div><label for="venue">Search For Venue:</label>
     <input type="text" id="venueInput" name="venue"> </input></div>
+    <p id="instructions">At the moment only places in New York City are available.</p>
     <div id="formButtons">
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="chairAddYelpFormSearch" value="search"></input>
     </div>
-  </form>`
+  </form></div>`
 }
-
-function searchYelpAndGetAllReviews(results){
-  console.log(results)
-}
-// <div><label for="location">Location</label>
-// <input type="text" id="locationInput" name="Location"> </input>
-// </div>
 
 function renderReviewForm(review) {
   const reviewDataID = review?`data-reviewid =${review.id}`:''
 //review undefined if no review passed
-  return `<h2> Add a review</h2>
-  <form id="${review?'chairEditForm':
-    'chairAddForm'}"${review?reviewDataID:""}>
+  return `<div class="form_container">
+  <h2> Add a review</h2>
+  <form id="chairEditForm">
     <div><label for="venue">Venue:</label>
     <input type="text" id="venueInput" name="venue"></input></div>
     <div><label for="review">Chair Review:</label>
-    <input type="text" id="reviewInput" name="chairReview"> </input>
+    <textarea type="text" id="reviewInput" name="chairReview" rows="10" cols="50"></textarea>
     </div>
     <div id="formButtons">
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="submit review"></input>
     </div>
-  </form>`
+  </form></div>`
 }
 
 
@@ -267,7 +277,6 @@ function displayAddForm() {
   )
   setTimeout(function (){
     $('main').on('click', '#chairAddYelpFormSearch', handleAddFormYelpSubmit)
-    //'#chairAddForm', handleAddFormSubmit) renderReviewForm
   },0)
 }
 
@@ -279,7 +288,8 @@ function displayEditForm(review) {
 }
 
 function renderSearchForm() {
-  return ` <h3>Search By Venue</h3>
+  return ` <div class="form_container">
+  <h3>Search By Venue</h3>
   	<form id="chairSearchForm">
     <label for="venue">Venue:</label>
     <input type="text" id="venueSearch" name="venueSearch"> </input>
@@ -287,7 +297,7 @@ function renderSearchForm() {
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="search"></input>
     </div>
-  </form>  `
+  </form></div>  `
 }
 
 function displaySearchForm() {
@@ -302,8 +312,8 @@ function noSearchResults(){
         <span> Venue Not Found. Please check spelling and try again. </span>
       </section>
       `)
-    //getAndDisplayNewReviews() //recursion
     }
+
 function noReviews(){
         $('main').html(`
           <section role="region" id="instructions" aria-live="assertive">
@@ -334,8 +344,10 @@ function handleAddFormSubmit(event) {
   console.log('submit yelp & review : handleAddFormSubmit')
   event.preventDefault()
   const review = {
+    venue : $('#venueInput').val(),
+    address : $('#addressInput').val(),
+    imageURL : $('#image_url').val(),
     chairReview : $('#reviewInput').val(),
-    userName : $('#userNameInput').val()
   }
   postReview(review, getAndDisplayNewReviews, handleApiError)
 }
@@ -346,10 +358,9 @@ function handleEditFormSubmit(event){
   event.preventDefault()
   const reviewID = $(event.currentTarget).data().reviewid
   const review = {
-    id:reviewID,
     venue : $('#venueInput').val(),
     chairReview : $('#reviewInput').val(),
-    userName : $('#userNameInput').val()
+    // userName : $('#userNameInput').val()
   }
   putReview(review, getAndDisplayNewReviews, handleApiError)
 }
@@ -381,7 +392,8 @@ function displayNewUserForm(){
     )}
 //
 function renderLoginForm(){
-  return `<form id="userLogin">
+  return `<div class="form_container">
+  <form id="userLogin">
     <h3>Login</h3>
     <div>
     <label for="userName">Username:</label>
@@ -392,10 +404,11 @@ function renderLoginForm(){
     <input type="button" id="cancel" value="cancel"></input>
     <input type="submit" id="submit" value="login"></input>
     </div>
-  </form>`
+  </form></div>`
 }
 function renderNewUserForm(){
-  return `<form id="newUserLogin">
+  return `<div class="form_container">
+  <form id="newUserLogin">
     <div><h3>Create New User</h3></div>
     <label for="userName">Username:</label>
     <input type="text" id="userNameInput" name="userName"> </input><br>
@@ -405,7 +418,7 @@ function renderNewUserForm(){
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="create user"></input>
     </div>
-  </form>`
+  </form></div>`
 }
 
 function postUserLogin(userData, success, failure){
@@ -416,6 +429,7 @@ function postUserLogin(userData, success, failure){
     data: JSON.stringify(userData),
     dataType: 'json',
     contentType: 'application/json',
+
     success: function(data){
       jwt = data.authToken
       console.log(`jwt:${jwt}`)
@@ -423,6 +437,7 @@ function postUserLogin(userData, success, failure){
       success(data)
     },
     failure: noUserFoundError()
+    //why does this always run even if it's successful??
   }
   $.ajax(settings)
 }
@@ -496,6 +511,9 @@ function searchYelp (searchTerm, success, error){
   $.ajax(settings)
 }
 
+
+;
+
 // function displaySearchYelp(){
 //       searchYelp(searchRequest,function (data,text){
 //        console.log(arguments)
@@ -512,12 +530,14 @@ function setupUIHandlers() {
   $('header').on('click', '#title', getAndDisplayNewReviews)
   $('header').on('click', '#logOut', logOutUser)
   $('header').on('click', '#searchForm', displaySearchForm)
-  $('heaer').on('click', '.hamburger', openHamburger)
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
-  $('main').on('submit', '#chairEditForm', handleEditFormSubmit)
-  $('main').on('submit', '#chairAddYelpFormSearch', searchYelpVenueForm)
-  $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
+  $("button").click(function(){
+      $("hamburger").toggleClass("is_active");
+      $("nav_menu").toggleClass("hidden")
+  })
+  // $('main').on('submit', '#chairAddYelpFormSearch', searchYelpVenueForm)
+  // $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
   $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
   $('main').on('click', '#cancel', getAndDisplayNewReviews)
   $('main').on('click', '#cancelForm', getAndDisplayNewReviews)

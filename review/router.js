@@ -55,6 +55,7 @@ router.post('/', jwtAuth, (req, res) => {
   ChairReview
   .create({
       venue: req.body.venue,
+      address:req.body.address,
       chairReview: req.body.chairReview,
       imageURL: req.body.imageURL,
       userName: req.user.username
