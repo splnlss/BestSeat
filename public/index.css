@@ -33,7 +33,7 @@ nav {
 }
 
 main {
-  padding-top: 40px;
+  padding-top: 20px;
   width: 80%;
   margin-left: auto;
   margin-right: auto;
@@ -63,11 +63,14 @@ main {
   padding: 5px 15px;
 }
 
-.review__container {
+.review_container {
     width: auto;
-    height: 200px;
-    display: flex;
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: row; */
+    border-bottom: 1px dashed;
+    overflow: hidden;
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
 
 
@@ -84,19 +87,16 @@ img.centered-and-cropped {
 } */
 
 .review__text{
+    position: relative;
     padding-left: 5%;
     display: flex;
     flex-direction: column;
-    height: 150px;
+    /* height: 150px; */
     width: 70%;
     float: right;
 
 }
 .review__item{
-
-}
-
-.is-active{
 
 }
 
@@ -106,7 +106,8 @@ img.centered-and-cropped {
 
 .navDropDown{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-around;
   align-content: flex-start;
 }
 
@@ -114,6 +115,8 @@ img.centered-and-cropped {
     border-width: thin;
     margin-left: auto;
     margin-right: auto;
+    width: fit-content;
+    padding: 5px;
 }
 
 #loginForm #newUserForm{
@@ -161,6 +164,11 @@ h1{
 h3{
   font-size: 18px;
   margin:0;
+}
+
+.formTitle{
+  text-align: center;
+  padding: 10px;
 }
 
 h4{
@@ -216,31 +224,42 @@ a:hover {
     padding: 5px 0 0 0;
     order: 10;
   }
+
 .hamburger{
     visibility:visible;
     display:flex;
     justify-content:center;
     order:1;
   }
-.hamburger--collapse .hamburger-inner {
-    top: 50px;
-    bottom:0;
-    right: 20px;
+
+button.hamburger--collapse .hamburger-inner{
+  /* display: relative; */
+  top: 40px;
+  right: 20px;
   }
+
+/* .hamburger-inner{
+  background-color: white;
+} */
+
+span.hamburger-inner, span.hamburger-inner::before, span.hamburger-inner::after {
+  background-color:white;
+}
 
 .hidden{
     display:none;
   }
 
 .siteHeader__section{
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  flex-flow: flex-start;
+  flex-flow: flex-start; */
   /* padding:5px 15px; */
 }
+
 .siteHeader__item {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
 }
 
 img.review_image{
@@ -251,9 +270,11 @@ img.centered-and-cropped {
   width: 100px;
   height:100px;
 }
+
 h1{
 
 }
-  h3{
+
+h3{
     font-size: 18px;
-  }
+}

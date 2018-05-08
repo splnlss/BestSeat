@@ -127,17 +127,11 @@ function renderHeader(){
   const loggedOut = [searchLink, logInLink, newUserLink]
   const links = jwt?loggedIn:loggedOut
 
-  // const mainNav = `<nav class="siteHeader__section nav_menu">
-  //                 ${links.map(function (link) {
-  //                 return `<div class="nav_item">${link}<div>`})
-  //                         .join('  ')}
-  //                 </nav>`
-
   return `<div class="headerContainer">
   <div class="siteHeader__section">
   <h1>${titleLink}</h1></div>
   <div class="siteHeader__section">
-                  <button class="hamburger hamburger--collapse nav_item" type="button">
+                  <button class="hamburger hamburger--collapse" type="button">
                       <span class="hamburger-spin">
                         <span class="hamburger-inner">
                         </span>
@@ -153,9 +147,6 @@ function renderHeader(){
                   </nav>
                   </div></div>`
 }
-//  /* <nav class="siteHeader__item">${links.join(` `)}</nav> */
-
-//changed from button to a link
 
 function openHamburger(){
     hamburger.classList.toggle("is-active");
@@ -173,12 +164,7 @@ const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
       <li class="review_item">${jwt?editReview:""}</li>
       <li class="review_item"><span>${review.chairReview}</span></li>
     </ul>
-  </div>
-  <svg width="250" height="1" viewBox="0 0 300 1"
-    xmlns="http://www.w3.org/2000/svg">
-  <line x1="0" x2="300"
-      stroke-width="1" stroke="#af9b95"/>
-</svg>`
+  </div>`
 }
 
 function renderYelpReviewForm(data) {
@@ -240,7 +226,7 @@ function searchAndDisplayNewReviews(searchTerm){
 
 function searchYelpVenueForm(){
   return `<div class="form_container">
-  <h2> Add a review</h2>
+  <h2 class="formTitle"> Add a review</h2>
   <form id="searchYelpVenueForm">
     <div><label for="venue">Search For Venue:</label>
     <input type="text" id="venueInput" name="venue"> </input></div>
@@ -256,7 +242,7 @@ function renderReviewForm(review) {
   const reviewDataID = review?`data-reviewid =${review.id}`:''
 //review undefined if no review passed
   return `<div class="form_container">
-  <h2> Add a review</h2>
+  <h2 class="formTitle"> Add a review</h2>
   <form id="chairEditForm">
     <div><label for="venue">Venue:</label>
     <input type="text" id="venueInput" name="venue"></input></div>
@@ -289,7 +275,7 @@ function displayEditForm(review) {
 
 function renderSearchForm() {
   return ` <div class="form_container">
-  <h3>Search By Venue</h3>
+  <h2 class="formTitle">Search By Venue</h2>
   	<form id="chairSearchForm">
     <label for="venue">Venue:</label>
     <input type="text" id="venueSearch" name="venueSearch"> </input>
@@ -394,7 +380,7 @@ function displayNewUserForm(){
 function renderLoginForm(){
   return `<div class="form_container">
   <form id="userLogin">
-    <h3>Login</h3>
+    <h2 class="formTitle">Login</h2>
     <div>
     <label for="userName">Username:</label>
     <input type="text" id="userNameInput" name="userName"> </input></div>
@@ -409,7 +395,7 @@ function renderLoginForm(){
 function renderNewUserForm(){
   return `<div class="form_container">
   <form id="newUserLogin">
-    <div><h3>Create New User</h3></div>
+    <div><h2 class="formTitle">Create New User</h2></div>
     <label for="userName">Username:</label>
     <input type="text" id="userNameInput" name="userName"> </input><br>
     <label for="userPassword">Password: </label>
@@ -533,8 +519,8 @@ function setupUIHandlers() {
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
   $("button").click(function(){
-      $("hamburger").toggleClass("is_active");
-      $("nav_menu").toggleClass("hidden")
+      $(".hamburger").toggleClass("is-active");
+      $(".nav_menu").toggleClass("hidden")
   })
   // $('main').on('submit', '#chairAddYelpFormSearch', searchYelpVenueForm)
   // $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
