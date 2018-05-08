@@ -148,11 +148,6 @@ function renderHeader(){
                   </div></div>`
 }
 
-function openHamburger(){
-    hamburger.classList.toggle("is-active");
-}
-
-
 function renderReview(review) {
 console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>

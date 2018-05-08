@@ -210,19 +210,21 @@ a:hover {
   }
 
   .nav_menu {
-    position: relative;
-    top: 95px;
-    /* display: flex;
-    flex-direction: column; */
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    z-index: 3000;
   }
 
 .nav_item{
     display: flex;
-    width:100px;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 5px 0 0 0;
+    width:100%;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 5px 0 2px 0;
     order: 10;
+
   }
 
 .hamburger{
