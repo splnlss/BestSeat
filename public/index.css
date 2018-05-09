@@ -224,8 +224,13 @@ a:hover {
     justify-content: space-around;
     padding: 5px 0 2px 0;
     order: 10;
+}
 
-  }
+/* border doesn't show up */
+form{
+  border: 1px dashed grey;
+  padding:5px;
+}
 
 .hamburger{
     visibility:visible;
