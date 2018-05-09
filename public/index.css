@@ -229,7 +229,7 @@ a:hover {
 
 /* border doesn't show up */
 form{
-  border: 1px dashed grey;
+  border: 1px dashed lightgrey;
   padding:5px;
 }
 
