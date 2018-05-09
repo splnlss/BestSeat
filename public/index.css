@@ -16,28 +16,108 @@ body{
 
 header{
   background-color: #e6a20e;
+  border-bottom: 1px solid grey;
+}
+
+.headerContainer{
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin-left: 10%;
   color: #ffffff;
-  height: 60px;
-  width: 100%;
-  top: 0px;
-  margin:0;
-  z-index:2000;
-  position: fixed;
 }
 
-main{
-  top: 100px;
-  width:70%;
-  text-align: left;
-  position: relative;
-  margin-left:auto;
-  margin-right:auto;
+nav {
+  display: flex;
+  flex-direction: row;
+  background-color: #e6a20e;
 }
 
-nav{
-  position: absolute;
-  top:20px;
-  right: 10%;
+main {
+  padding-top: 20px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.siteHeader__section {
+    display: flex;
+    align-items: center;
+  }
+
+.siteHeader__item {
+  display: flex;
+  /* flex-direction: row;
+  padding: 5px 15px; */
+    /* font-size: 12px; */
+}
+
+.nav_menu{
+  display: block;
+
+}
+
+.nav_item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 15px;
+}
+
+.review_container {
+    width: auto;
+    /* display: flex;
+    flex-direction: row; */
+    border-bottom: 1px dashed;
+    overflow: hidden;
+    padding-top: 20px;
+    /* padding-bottom: 10px; */
+}
+
+
+img.centered-and-cropped {
+  object-fit: cover;
+  width: 200px;
+  height:200px;
+  border-radius:4%;
+  justify-content: center
+}
+
+/* .review__image {
+  width: 200px;
+} */
+
+.review__text{
+    position: relative;
+    padding-left: 5%;
+    display: flex;
+    flex-direction: column;
+    /* height: 150px; */
+    width: 70%;
+    float: right;
+
+}
+.review__item{
+
+}
+
+.hamburger{
+  visibility: hidden;
+}
+
+.navDropDown{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: flex-start;
+}
+
+.form_container{
+    border-width: thin;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    padding: 5px;
 }
 
 #loginForm #newUserForm{
@@ -70,12 +150,16 @@ nav{
 }
 
 ul{
-  list-style-type: none;
+  /* list-style-type: none; */
   padding-left: 0;
 }
-
+li{
+  list-style-type: none;
+  padding-bottom: 5px;
+}
 
 h1{
+<<<<<<< HEAD
   font-size: 28px;
   position: absolute;
   display: inline-block;
@@ -86,6 +170,19 @@ h3{
   font-size: 22px;
   margin-top: 20px;
   margin-bottom: 8px;
+=======
+  font-size: 24px;
+}
+
+h3{
+  font-size: 18px;
+  margin:0;
+}
+
+.formTitle{
+  text-align: center;
+  padding: 10px;
+>>>>>>> features
 }
 
 h4{
@@ -105,19 +202,100 @@ a:hover {
 
 @media only screen and (max-width: 640px) {
 
+  .headerContainer{
+      width:90%;
+      margin-left:auto;
+      margin-right: auto;
+  }
+
   main{
-    top: 70px;
-    width: 80%;
+      width:90%;
+      margin-left:auto;
+      margin-right: auto;
+      /* top: 70px;
+      width: 80%; */
   }
-  nav {
-    left: 10%;
-    top: 40px;
+
+  .nav_menu {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    z-index: 3000;
   }
-  h1{
-    left: 10%;
+
+.nav_item{
+    display: flex;
+    width:100%;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 5px 0 2px 0;
+    order: 10;
+}
+
+/* border doesn't show up */
+form{
+  border: 1px dashed grey;
+  padding:5px;
+}
+
+.hamburger{
+    visibility:visible;
+    display:flex;
+    justify-content:center;
+    order:1;
   }
+
+button.hamburger--collapse .hamburger-inner{
+  /* display: relative; */
+  top: 40px;
+  right: 20px;
+  }
+<<<<<<< HEAD
   h3{
     /* font-size: 20px; */
     margin-top: 5px;
     margin-bottom: 2px;
+=======
+
+/* .hamburger-inner{
+  background-color: white;
+} */
+
+span.hamburger-inner, span.hamburger-inner::before, span.hamburger-inner::after {
+  background-color:white;
+}
+
+.hidden{
+    display:none;
+>>>>>>> features
   }
+
+.siteHeader__section{
+  /* display: flex;
+  flex-direction: column;
+  flex-flow: flex-start; */
+  /* padding:5px 15px; */
+}
+
+.siteHeader__item {
+      display: flex;
+      flex-direction: row;
+}
+
+img.review_image{
+  height: 100px;
+}
+
+img.centered-and-cropped {
+  width: 100px;
+  height:100px;
+}
+
+h1{
+
+}
+
+h3{
+    font-size: 18px;
+}

@@ -4,6 +4,7 @@ mongoose.Promise = global.Promise
 const ReviewSchema = mongoose.Schema({
   venue: {type:String, required: true},
   chairReview: {type:String, required: true},
+  imageURL: {type:String, required:false},
   userName: {type:String, required: true},
   publishedAt: {type:Date, default: new Date()}
 })
@@ -17,6 +18,7 @@ ReviewSchema.methods.serialize = function(){
       id: this._id,
       venue: this.venue,
       chairReview: this.chairReview,
+      imageURL: this.imageURL,
       userName: this.userName,
       publishedAt: this.publishedAt
   }

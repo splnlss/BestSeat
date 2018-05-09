@@ -9,6 +9,7 @@ mongoose.Promise = global.Promise
 const {DATABASE_URL, PORT} = require('./config')
 const {router:reviewRouter} = require('./review')
 const {router:userRouter} = require('./user')
+const {router:yelpRouter} = require('./yelp')
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 // require models
 
@@ -25,6 +26,7 @@ passport.use(jwtStrategy)
 app.use('/api/user', userRouter)
 app.use('/api/review/', reviewRouter)
 app.use('/api/auth/', authRouter)
+app.use('/api/yelp', yelpRouter)
 
 //middleware to recognize jwt
 const jwtAuth = passport.authenticate('jwt', { session: false })

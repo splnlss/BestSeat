@@ -55,7 +55,9 @@ router.post('/', jwtAuth, (req, res) => {
   ChairReview
   .create({
       venue: req.body.venue,
+      address:req.body.address,
       chairReview: req.body.chairReview,
+      imageURL: req.body.imageURL,
       userName: req.user.username
     })
   .then(review => res.status(201).json(review.serialize()))
@@ -72,7 +74,7 @@ router.put('/:id', jwtAuth, (req, res) =>{
     })
   }
   const updated = {};
-  const updateableFields = ['venue', 'chairReview'];
+  const updateableFields = ['venue', 'chairReview', 'imageURL'];
   updateableFields.forEach(field => {
     if (field in req.body) {
       updated[field] = req.body[field];
