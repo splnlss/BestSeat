@@ -16,6 +16,7 @@ body{
 
 header{
   background-color: #e6a20e;
+  border-bottom: 1px solid grey;
 }
 
 .headerContainer{
@@ -60,7 +61,7 @@ main {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 5px 15px;
+  padding-left: 15px;
 }
 
 .review_container {
@@ -78,7 +79,7 @@ img.centered-and-cropped {
   object-fit: cover;
   width: 200px;
   height:200px;
-  border-radius:10%;
+  border-radius:4%;
   justify-content: center
 }
 

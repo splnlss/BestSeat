@@ -118,13 +118,14 @@ function displayHeader(){
 
 function renderHeader(){
   const titleLink = `<a id="title">Best Seat In The House</a>`
-  const addLink = `<a id="addForm">Add</a>`
+  const addLink = `<a id="addForm">Create Review</a>`
   const logInLink = `<a id="loginForm">Login</a>`
   const newUserLink = `<a id="newUserForm">New User</a>`
-  const searchLink = `<a id="searchForm">Search</a>`
+  const searchLink = `<i class="fas fa-search" id="searchForm"></i>`
+  //<a id="searchForm">Search</a>
   const logOutLink = `<a id="logOut">Logout</a>`
-  const loggedIn = [addLink, searchLink, logOutLink]
-  const loggedOut = [searchLink, logInLink, newUserLink]
+  const loggedIn = [addLink, logOutLink, searchLink]
+  const loggedOut = [logInLink, newUserLink, searchLink]
   const links = jwt?loggedIn:loggedOut
 
   return `<div class="headerContainer">
