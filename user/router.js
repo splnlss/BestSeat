@@ -103,17 +103,23 @@ router.post('/', jsonParser, (req, res) => {
           reason: 'ValidationError',
           message: 'Username already taken',
           location: 'username'
-        });
+        })
+        //.then(resolved, rejected);
+        .then(function() {
+          console.log("resolved")// not called
+          }, function(error) {
+            console.log(error); // Stacktrace
+          });
       }
       // If there is no existing user, hash the password
       return User.hashPassword(password);
-    })
+    }, error => console.log('error case'))
     .then(hash => {
       return User.create({
         username,
         password: hash
       });
-    })
+    }, error => console.log('error case'))
     .then(user => {
       return res.status(201).json(user.serialize());
     })

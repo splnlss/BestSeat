@@ -184,7 +184,7 @@ console.log(data)
   <div id="formButtons">
     <input type="button" id="cancel" value="cancel"></input>
     <input type="submit" id="submit_chairAddForm" value="submit review"></input>
-  </form>
+  </form><div id="errormsg"></div>
   </div>`
 }
 
@@ -231,7 +231,7 @@ function searchYelpVenueForm(){
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="chairAddYelpFormSearch" value="search"></input>
     </div>
-  </form></div>`
+  </form><div id="errormsg"></div></div>`
 }
 
 function renderReviewForm(review) {
@@ -249,7 +249,7 @@ function renderReviewForm(review) {
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="submit review"></input>
     </div>
-  </form></div>`
+  </form><div id="errormsg"></div></div>`
 }
 
 
@@ -279,7 +279,7 @@ function renderSearchForm() {
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="search"></input>
     </div>
-  </form></div>  `
+  </form><div id="errormsg"></div></div>  `
 }
 
 function displaySearchForm() {
@@ -386,7 +386,9 @@ function renderLoginForm(){
     <input type="button" id="cancel" value="cancel"></input>
     <input type="submit" id="submit" value="login"></input>
     </div>
-  </form></div>`
+  </form>
+  <div id="errormsg"></div>
+  </div>`
 }
 function renderNewUserForm(){
   return `<div class="form_container">
@@ -400,7 +402,9 @@ function renderNewUserForm(){
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="create user"></input>
     </div>
-  </form></div>`
+  </form>
+  <div id="errormsg"></div>
+  </div>`
 }
 
 function postUserLogin(userData, success, failure){
@@ -467,9 +471,9 @@ function logOutUser(){
 }
 
 function noUserFoundError(){
-    $('main').append(`
+    $('#errormsg').html(`
       <section role="region" id="instructions" aria-live="assertive">
-        <span> Username and/or password is incorrect. Please try again. </span>
+        <span> Username and/or password is incorrect.</span>
       </section>
       `)
     }
