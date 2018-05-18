@@ -106,20 +106,25 @@ router.post('/', jsonParser, (req, res) => {
         })
         //.then(resolved, rejected);
         // .then(function() {
-        //   console.log("resolved")// not called
-        //   }, function(error) {
-        //     console.log(error); // Stacktrace
-        //   });
+        //   console.log("resolved")
+        //   // not called
+        // })
+        .catch(function(error){
+          console.log('500 error', error)
+        })
       }
       // If there is no existing user, hash the password
-      return User.hashPassword(password).save();
-    }, error => console.log('error case'))
+      return User.hashPassword(password);
+    })
+          // , error => console.log('error case'))
+
     .then(hash => {
       return User.create({
         username,
         password: hash
-      });
-    }, error => console.log('error case'))
+        })
+      })
+
     .then(user => {
       return res.status(201).json(user.serialize());
     })
@@ -130,6 +135,7 @@ router.post('/', jsonParser, (req, res) => {
         return res.status(err.code).json(err);
       }
       res.status(500).json({code: 500, message: 'Internal server error'});
+      //possible error 500 location
     });
 });
 

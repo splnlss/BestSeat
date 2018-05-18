@@ -211,9 +211,10 @@ function getAndDisplayYelpResults(data,text){
   $('main').html(
   renderYelpReviewForm(data))
   setTimeout(function (){
-      $('main').on('click', '#submit_chairAddForm', handleAddFormSubmit)
+      $('#submit_chairAddForm').click(handleAddFormSubmit)
   },0)
 }
+
 
 function searchAndDisplayNewReviews(searchTerm){
   displayHeader()
@@ -407,7 +408,7 @@ function renderNewUserForm(){
   </div>`
 }
 
-function postUserLogin(userData, success, failure){
+function postUserLogin(userData, success, error){
   console.log(userData)
   const settings = {
     url: '/api/auth/login',
@@ -422,7 +423,7 @@ function postUserLogin(userData, success, failure){
     //  console.log(atob(jwt))
       success(data)
     },
-    failure: noUserFoundError()
+    error: noUserFoundError
     //why does this always run even if it's successful??
   }
   $.ajax(settings)
