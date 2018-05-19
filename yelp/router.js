@@ -16,8 +16,11 @@ const apiKey = 'VoQF4ECI5zLaEXAJ7jGUYR7Xzzhl-ecVK3ZEzT6tw-PM_i1PW5w_ZW8OyxRpX3S7
 const client = yelp.client(apiKey);
 
 router.get('/', (req, res) =>{
+
   const searchRequest = req.query;
+
   client.search(searchRequest)
+
   .then(response => {
     const firstResult = response.jsonBody.businesses[0];
     const prettyJson = JSON.stringify(firstResult, null, 4);

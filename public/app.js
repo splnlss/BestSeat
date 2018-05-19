@@ -74,7 +74,6 @@ function postReview (review, success, failure){
 
 function putReview (review, success, failure){
   console.log('put review')
-  console.log(review)
   const settings = {
     url: `/api/review/${review.id}`,
     type: 'PUT',
@@ -149,37 +148,54 @@ function renderHeader(){
                   </div></div>`
 }
 
+function renderLandingPage(){
+  console.log('render landing page')
+  return `<div class=’outer-flex-dialogBox>
+     <div class=’inner-flex-dialogBox>
+          <p>Welcome to The Best Seat: </p>
+          <p>a place to comment and review restaurant chairs for those of us with back or other handicaps.</p>
+     </div>
+</div>`
+
+}
+
 function renderReview(review) {
-console.log(review)
 const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
 
   return `<div class="review_container"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped">
     <ul class="review__text">
-      <li class="review_item"><h3>${review.venue}</h3></li>
+      <li class="review_item" id="venueName"><h3>${review.venue}</h3></li>
       <li class="review_item">${jwt?editReview:""}</li>
       <li class="review_item"><span>${review.chairReview}</span></li>
     </ul>
   </div>`
 }
 
+function renderReviewPage(){
+
+}
+
 function renderYelpReviewForm(data) {
-console.log(data)
+  console.log(data)
   return `<div class="review_container">
   <img src="${data.image_url}" alt="Chair Review Image" class="review_image centered-and-cropped">
   <form id="chairAddForm'>
   <ul>
     <li class="review_item"><label for="venue">Venue:</label>
-    <input type="text" id="venueInput" name="venue" value="${data.name}"></li>
+    <input type="text" id="venueInput" name="venue" value="${data.name}" size="50"></li>
 
     <li class="review_item"><label for="address">Address:</label>
-    <input type="text" id="addressInput" name="address" value="${data.location.address1}, ${data.location.city}, ${data.location.zip_code}"></li>
+    <input type="text" id="addressInput" name="address" value="${data.location.address1}, ${data.location.city}, ${data.location.zip_code}" size="50"></li>
 
     <li class="review_item"><label for="review">Chair Review:</label>
     <textarea type="text" id="reviewInput" name="chairReview" rows="10" cols="50"></textarea></li>
 
     <li><label for="url" class="review_item">Image URL</label>
-    <input type="text" id="image_url" name="image_url" value="${data.image_url}"></li>
+    <input type="text" id="image_url" name="image_url" value="${data.image_url}" size="50"></li>
+    <li><input type="text" id="phone" name="phone" value="${data.phone}" size="50"></li>
+    <li><input type="text" id="price" name="price" value="${data.price}" size="50"></li>
+    <li><input type="text" id="yelpUrl" name="yelpUrl" value="${data.url}" size="50"></li>
   </ul>
   <div id="formButtons">
     <input type="button" id="cancel" value="cancel"></input>
@@ -226,7 +242,7 @@ function searchYelpVenueForm(){
   <h2 class="formTitle"> Add a review</h2>
   <form id="searchYelpVenueForm">
     <div><label for="venue">Search For Venue:</label>
-    <input type="text" id="venueInput" name="venue"> </input></div>
+    <input type="text" id="venueInput" name="venue" size="50"> </input></div>
     <p id="instructions">At the moment only places in New York City are available.</p>
     <div id="formButtons">
       <input type="button" id="cancel" value="cancel"></input>
@@ -275,7 +291,7 @@ function renderSearchForm() {
   <h2 class="formTitle">Search By Venue</h2>
   	<form id="chairSearchForm">
     <label for="venue">Venue:</label>
-    <input type="text" id="venueSearch" name="venueSearch"> </input>
+    <input type="text" id="venueSearch" name="venueSearch" size="50"> </input>
     <div>
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="search"></input>
@@ -331,6 +347,9 @@ function handleAddFormSubmit(event) {
     address : $('#addressInput').val(),
     imageURL : $('#image_url').val(),
     chairReview : $('#reviewInput').val(),
+    phone:$('#phone').val(),
+    price:$('#price').val(),
+    yelpUrl: $('#yelpUrl').val(),
   }
   postReview(review, getAndDisplayNewReviews, handleApiError)
 }
@@ -372,7 +391,8 @@ function displayLoginForm(){
 function displayNewUserForm(){
     $('main').html(
       renderNewUserForm()
-    )}
+    )
+  }
 //
 function renderLoginForm(){
   return `<div class="form_container">
@@ -485,7 +505,6 @@ function searchYelp (searchTerm, success, error){
     term: searchTerm.venue,
     location: 'New York, NY'
   };
-  console.log(searchRequest)
 
   const settings = {
 
@@ -536,5 +555,6 @@ function setupUIHandlers() {
 
 $(function() {
   getAndDisplayNewReviews()
+  renderLandingPage()
   setupUIHandlers()
 })

@@ -58,6 +58,9 @@ router.post('/', jwtAuth, (req, res) => {
       address:req.body.address,
       chairReview: req.body.chairReview,
       imageURL: req.body.imageURL,
+      phone: req.body.phone,
+      price: req.body.price,
+      yelpUrl: req.body.yelpUrl,
       userName: req.user.username
     })
   .then(review => res.status(201).json(review.serialize()))
