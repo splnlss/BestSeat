@@ -131,11 +131,14 @@ img.centered-and-cropped {
 }
 
 .form_container{
-    border-width: thin;
+    border: 1px solid #e6a20e;
+    border-radius: 4px;
+    /* border-width: thin; */
+    margin-top: 5%;
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
-    padding: 5px;
+    padding: 15px 35px 35px 35px;
 }
 
 #loginForm #newUserForm{
@@ -158,10 +161,11 @@ img.centered-and-cropped {
   margin-left: 96px;
 }
 #login, #formButtons{
-  display: inline-block;
+  display: flex;
+  justify-content: space-around;
   margin-top:10px;
-  left:15%;
 }
+
 #instructions{
   color: red;
   margin-top: 20px;
@@ -186,6 +190,8 @@ h3{
 }
 
 .formTitle{
+  margin-top: 0;
+  margin-bottom: 60px;
   text-align: center;
   padding: 10px;
 }
@@ -246,10 +252,10 @@ a:hover {
 }
 
 /* border doesn't show up */
-form{
+/* form{
   border: 1px dashed lightgrey;
   padding:5px;
-}
+} */
 
 .hamburger{
     visibility:visible;

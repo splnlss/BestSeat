@@ -108,11 +108,6 @@ function displayHeader(){
   $('header').html(
     renderHeader()
   )
-  // setTimeout(() => {
-  //   $('#loginForm').click(() => {
-  //   alert('greuzzi');
-  //   });
-  // } , 0);
 }
 
 function renderHeader(){
@@ -172,8 +167,21 @@ const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   </div>`
 }
 
-function renderReviewPage(){
+function renderReviewPage(review){
+  const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
+    <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
 
+    return `<div class="review_container"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped">
+      <ul class="review__text">
+        <li class="review_item" id="venueName"><h3>${review.venue}</h3></li>
+        <li class="review_item">${jwt?editReview:""}</li>
+        <li class="review_item"><span>${review.address}</span></li>
+        <li class="review_item"><span>${review.phone}</span></li>
+        <li class="review_item"><span>${review.price}</span></li>
+        <li class="review_item"><span>${review.chairReview}</span></li>
+        <li class="review_item"><span>${review.yelpUrl}</span></li>
+      </ul>
+    </div>`
 }
 
 function renderYelpReviewForm(data) {
@@ -213,6 +221,13 @@ function displayNewReviews(data) {
   console.log(data)
   $('main').html(
     renderReviews(data)//NEED TO SORT BY DATE!!
+  )
+}
+
+function displayReviewPage(review){
+  console.log(review)
+  $('main').html(
+    renderReviewPage(review)
   )
 }
 
@@ -323,8 +338,16 @@ function noReviews(){
 
 function handleEditReview(event){
   const reviewID = $(event.currentTarget).data().reviewid
+  console.log(reviewID)
   getReview(reviewID, displayEditForm,handleApiError)
 }
+
+function handleReviewSelect(event){
+  const reviewID = $(event.currentTarget).data().reviewid
+  console.log(reviewID)
+  getReview(reviewID, displayReviewPage, handleApiError)
+}
+
 
 function handleAddFormYelpSubmit(event) {
   event.preventDefault()
@@ -403,7 +426,7 @@ function renderLoginForm(){
     <input type="text" id="userNameInput" name="userName"> </input></div>
     <div><label for="userPassword">Password: </label>
     <input type="text" id="userPasswordInput" name="userPassword"></input></div>
-    <div>
+    <div id="formButtons">
     <input type="button" id="cancel" value="cancel"></input>
     <input type="submit" id="submit" value="login"></input>
     </div>
@@ -411,6 +434,7 @@ function renderLoginForm(){
   <div id="errormsg"></div>
   </div>`
 }
+
 function renderNewUserForm(){
   return `<div class="form_container">
   <form id="newUserLogin">
@@ -419,7 +443,7 @@ function renderNewUserForm(){
     <input type="text" id="userNameInput" name="userName"> </input><br>
     <label for="userPassword">Password: </label>
     <input type="text" id="userPasswordInput" name="userPassword"></input>
-    <div>
+    <div id="formButtons">
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="create user"></input>
     </div>
@@ -518,8 +542,6 @@ function searchYelp (searchTerm, success, error){
 }
 
 
-;
-
 // function displaySearchYelp(){
 //       searchYelp(searchRequest,function (data,text){
 //        console.log(arguments)
@@ -547,8 +569,14 @@ function setupUIHandlers() {
   $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
   $('main').on('click', '#cancel', getAndDisplayNewReviews)
   $('main').on('click', '#cancelForm', getAndDisplayNewReviews)
-  $('main').on('click', '.editReview', handleEditReview)
+  // $('main').on('click', '.editReview', handleEditReview)
   $('main').on('click', '.deleteReview', handleDeleteReview)
+  $('main').on('click', '#venueName', handleReviewSelect)
+  //handleReviewSelect
+  // $('main').on('click', '#venueName', function (){
+  //   console.log(this.review)
+  //   displayReviewPage(this.review)
+  // })
 }
 
 //Fire up page
