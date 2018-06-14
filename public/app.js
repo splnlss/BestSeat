@@ -145,13 +145,19 @@ function renderHeader(){
 
 function renderLandingPage(){
   console.log('render landing page')
-  return `<div class=’outer-flex-dialogBox>
-     <div class=’inner-flex-dialogBox>
-          <p>Welcome to The Best Seat: </p>
-          <p>a place to comment and review restaurant chairs for those of us with back or other handicaps.</p>
-     </div>
-</div>`
-
+  return `<div class="outer-flex-dialogBox">
+       <div class="inner-flex-dialogBox">
+            <span id="close">X</span>
+            <h3>Welcome to The Best Seat</h3>
+            <i>a place to review chairs. </i>
+            <p>This site is dedicated to those of us with back or other handicaps. Nothings worse then spending money on a fancy meal and walk away in pain.</p>
+            <p>Please add your own reviews and post photos of your favorite or worst seats.</p>
+         <div id="formButtons">
+           <input type="button" id="introNewUser" value="Create Account"></input>
+           <input type="button" id="introLogin" value="Login"></input>
+        </div>
+       </div>
+     </div>`
 }
 
 function renderReview(review) {
@@ -160,7 +166,7 @@ const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
 
   return `<div class="review_container"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped">
     <ul class="review__text">
-      <li class="review_item" id="venueName"><h3>${review.venue}</h3></li>
+      <li class="review_item" id="venueName" data-reviewid=${review.id}><h3>${review.venue}</h3></li>
       <li class="review_item">${jwt?editReview:""}</li>
       <li class="review_item"><span>${review.chairReview}</span></li>
     </ul>
@@ -171,15 +177,15 @@ function renderReviewPage(review){
   const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
     <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
 
-    return `<div class="review_container"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped">
+    return `<div class="review_page"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped-Large">
       <ul class="review__text">
-        <li class="review_item" id="venueName"><h3>${review.venue}</h3></li>
+        <li class="review_item" id="venueName"><h2>${review.venue}</h2></li>
         <li class="review_item">${jwt?editReview:""}</li>
-        <li class="review_item"><span>${review.address}</span></li>
-        <li class="review_item"><span>${review.phone}</span></li>
-        <li class="review_item"><span>${review.price}</span></li>
-        <li class="review_item"><span>${review.chairReview}</span></li>
-        <li class="review_item"><span>${review.yelpUrl}</span></li>
+        <li class="review_item"><span>Address: ${review.address}</span></li>
+        <li class="review_item"><span>Phone: ${review.phone}</span></li>
+        <li class="review_item"><span>Price: ${review.price}</span></li>
+        <li class="review_item"><span>Yelp info: ${review.yelpUrl}</span></li>
+        <li class="review_item"><span>Review: ${review.chairReview}</span></li>
       </ul>
     </div>`
 }
@@ -506,7 +512,7 @@ function handleNewUserLoginSubmit(event) {
     password : $('#userPasswordInput').val()
   }
   //change success to 'new user created'
-  postNewUserLogin(newUserLogin, getAndDisplayNewReviews, handleApiError)
+  postNewUserLogin(newUserLogin, displayLoginForm, handleApiError)
 }
 
 function logOutUser(){
@@ -557,6 +563,9 @@ function setupUIHandlers() {
   $('header').on('click', '#newUserForm', displayNewUserForm)
   $('header').on('click', '#title', getAndDisplayNewReviews)
   $('header').on('click', '#logOut', logOutUser)
+  $('main').on('click', '#close', getAndDisplayNewReviews)
+  $('main').on('click', '#introNewUser', displayNewUserForm)
+  $('main').on('click', '#introLogin', displayLoginForm)
   $('header').on('click', '#searchForm', displaySearchForm)
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
@@ -583,6 +592,8 @@ function setupUIHandlers() {
 
 $(function() {
   getAndDisplayNewReviews()
-  renderLandingPage()
+  setTimeout(function(){
+     $('main').append(renderLandingPage())
+   }, 500)
   setupUIHandlers()
 })
