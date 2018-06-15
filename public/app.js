@@ -172,7 +172,7 @@ const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
 
   return `<div class="review_container"><img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped" id="venueName" data-reviewid=${review.id}>
     <ul class="review__text">
-      <li class="review_item" id="venueName" data-reviewid=${review.id}><h3>${review.venue}</h3></li>
+      <li class="review_item" id="venueName" data-reviewid=${review.id}><h2>${review.venue}</h2></li>
       <li class="review_item">${jwt?editReview:""}</li>
       <li class="review_item"><span>${review.chairReview}</span></li>
     </ul>
@@ -186,12 +186,12 @@ function renderReviewPage(review){
     return `<div class="review_page"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped-Large">
       <ul class="review__text">
         <li class="review_item"><h2>${review.venue}</h2></li>
-        <li class="review_item">Author: ${review.userName} ${jwt?editReview:""}</li>
         <li class="review_item"><span>Address: ${review.address}</span></li>
         <li class="review_item"><span>Phone: ${review.phone}</span></li>
         <li class="review_item"><span>Price: ${review.price}</span></li>
         <lilass="review_item"><span>Yelp info: <a href="#" onClick="MyWindow=window.open('${review.yelpUrl}','MyWindow','width=600,height=600'); return false;">more info...</a>
         <li class="review_item"><span><h4>Review:</h4> ${review.chairReview}</span></li>
+        <li class="review_item createdBy">- written by ${review.userName} ${jwt?editReview:""}</li>
       </ul>
     </div>`
 }
