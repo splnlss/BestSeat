@@ -193,7 +193,7 @@ function renderReviewPage(review){
 function renderYelpReviewForm(data) {
   console.log(data)
   return `<div class="review_container">
-  <img src="${data.image_url}" alt="Chair Review Image" class="review_image centered-and-cropped">
+  <img src="${data.image_url}" alt="Chair Review Image" class="review_image centered-and-cropped-Large">
   <form id="chairAddForm'>
   <ul>
     <li class="review_item"><label for="venue">Venue:</label>
@@ -201,15 +201,16 @@ function renderYelpReviewForm(data) {
 
     <li class="review_item"><label for="address">Address:</label>
     <input type="text" id="addressInput" name="address" value="${data.location.address1}, ${data.location.city}, ${data.location.zip_code}" size="50"></li>
-
-    <li class="review_item"><label for="review">Chair Review:</label>
-    <textarea type="text" id="reviewInput" name="chairReview" rows="10" cols="50"></textarea></li>
-
-    <li><label for="url" class="review_item">Image URL</label>
+    <li><label for="url" class="review_item">Image URL: </label>
     <input type="text" id="image_url" name="image_url" value="${data.image_url}" size="50"></li>
-    <li><input type="text" id="phone" name="phone" value="${data.phone}" size="50"></li>
-    <li><input type="text" id="price" name="price" value="${data.price}" size="50"></li>
-    <li><input type="text" id="yelpUrl" name="yelpUrl" value="${data.url}" size="50"></li>
+    <li><label for="text" class="review_item">Phone: </label>
+    <input type="text" id="phone" name="phone" value="${data.phone}" size="50"></li>
+    <li><label for="text" class="review_item">Price: </label>
+    <input type="text" id="price" name="price" value="${data.price}" size="50"></li>
+    <li><label for="text" class="review_item">Yelp Url: </label>
+    <input type="text" id="yelpUrl" name="yelpUrl" value="${data.url}" size="50"></li>
+    <li class="review_item"><label for="review">Write Chair Review: </label></li>
+    <li><textarea type="text" id="reviewInput" name="chairReview" rows="10" cols="50"></textarea></li>
   </ul>
   <div id="formButtons">
     <input type="button" id="cancel" value="cancel"></input>
@@ -272,22 +273,37 @@ function searchYelpVenueForm(){
   </form><div id="errormsg"></div></div>`
 }
 
-function renderReviewForm(review) {
+function renderReviewForm(review) { //edit form
   const reviewDataID = review?`data-reviewid =${review.id}`:''
 //review undefined if no review passed
-  return `<div class="form_container">
-  <h2 class="formTitle"> Add a review</h2>
-  <form id="chairEditForm">
-    <div><label for="venue">Venue:</label>
-    <input type="text" id="venueInput" name="venue"></input></div>
-    <div><label for="review">Chair Review:</label>
-    <textarea type="text" id="reviewInput" name="chairReview" rows="10" cols="50"></textarea>
-    </div>
-    <div id="formButtons">
-      <input type="button" id="cancel" value="cancel"></input>
-      <input type="submit" id="submit" value="submit review"></input>
-    </div>
-  </form><div id="errormsg"></div></div>`
+  return `<div class="review_container">
+  <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped-Large">
+  <form id="chairEditForm'>
+  <ul>
+    <li> <h2 class="formTitle"> Edit a review</h2></li>
+    <li class="review_item"><label for="venue">Venue:</label>
+    <input type="text" id="venueInput" name="venue" value="${review.name}" size="50"></li>
+
+    <li class="review_item"><label for="address">Address:</label>
+    <input type="text" id="addressInput" name="address" value="${review.address}" size="50"></li>
+    <li><label for="url" class="review_item">Image URL: </label>
+    <input type="text" id="image_url" name="image_url" value="${review.image_url}" size="50"></li>
+    <li><label for="text" class="review_item">Phone: </label>
+    <input type="text" id="phone" name="phone" value="${review.phone}" size="50"></li>
+    <li><label for="text" class="review_item">Price: </label>
+    <input type="text" id="price" name="price" value="${review.price}" size="50"></li>
+    <li><label for="text" class="review_item">Yelp Url: </label>
+    <input type="text" id="yelpUrl" name="yelpUrl" value="${review.url}" size="50"></li>
+    <li class="review_item"><label for="review">Write Chair Review: </label></li>
+    <li><textarea type="text" id="reviewInput" name="chairReview" rows="10" cols="50" value="${review.chairReview}"></textarea></li>
+    <li>Created by ${review.userName}</li>
+  </ul>
+  <div id="formButtons">
+    <input type="button" id="cancel" value="cancel"></input>
+    <input type="submit" id="submit_chairEditForm" value="submit review"></input>
+  </form><div id="errormsg"></div>
+  </div>
+  <div id="errormsg"></div></div>`
 }
 
 
@@ -305,6 +321,11 @@ function displayEditForm(review) {
   $('#venueInput').val(review.venue)
   $('#reviewInput').val(review.chairReview)
   $('#userNameInput').val(review.userName)
+  setTimeout(function (){
+    $('main').on('submit', '#chairEditForm', function(event){
+      event.preventDefault()
+      handleEditFormSubmit(event, review)})//handleEditFormSubmit
+  },0)
 }
 
 function renderSearchForm() {
@@ -384,14 +405,20 @@ function handleAddFormSubmit(event) {
 }
 
 
-function handleEditFormSubmit(event){
-  console.log('submit chairEditForm')
+function handleEditFormSubmit(event, review){
+  console.log(review)
   event.preventDefault()
   const reviewID = $(event.currentTarget).data().reviewid
+  console.log($(event.currentTarget).data())
   const review = {
+    id: review.id,
     venue : $('#venueInput').val(),
+    address : $('#addressInput').val(),
+    imageURL : $('#image_url').val(),
     chairReview : $('#reviewInput').val(),
-    // userName : $('#userNameInput').val()
+    phone:$('#phone').val(),
+    price:$('#price').val(),
+    yelpUrl: $('#yelpUrl').val(),
   }
   putReview(review, getAndDisplayNewReviews, handleApiError)
 }
@@ -578,7 +605,7 @@ function setupUIHandlers() {
   $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
   $('main').on('click', '#cancel', getAndDisplayNewReviews)
   $('main').on('click', '#cancelForm', getAndDisplayNewReviews)
-  // $('main').on('click', '.editReview', handleEditReview)
+  $('main').on('click', '.editReview', handleEditReview)
   $('main').on('click', '.deleteReview', handleDeleteReview)
   $('main').on('click', '#venueName', handleReviewSelect)
   //handleReviewSelect
