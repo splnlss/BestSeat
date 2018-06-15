@@ -108,6 +108,11 @@ function displayHeader(){
   $('header').html(
     renderHeader()
   )
+  setTimeout(function(){
+    $("button.hamburger").click(function(){
+      $(".hamburger").toggleClass("is-active");
+      $(".nav_menu").toggleClass("hidden")
+  })},0)
 }
 
 function renderHeader(){
@@ -287,7 +292,7 @@ function renderReviewForm(review) { //edit form
     <li class="review_item"><label for="address">Address:</label>
     <input type="text" id="addressInput" name="address" value="${review.address}" size="50"></li>
     <li><label for="url" class="review_item">Image URL: </label>
-    <input type="text" id="image_url" name="image_url" value="${review.image_url}" size="50"></li>
+    <input type="text" id="image_url" name="image_url" value="${review.imageURL}" size="50"></li>
     <li><label for="text" class="review_item">Phone: </label>
     <input type="text" id="phone" name="phone" value="${review.phone}" size="50"></li>
     <li><label for="text" class="review_item">Price: </label>
@@ -300,7 +305,7 @@ function renderReviewForm(review) { //edit form
   </ul>
   <div id="formButtons">
     <input type="button" id="cancel" value="cancel"></input>
-    <input type="submit" id="submit_chairEditForm" value="submit review"></input>
+    <input type="submit" id="submit_chairEditForm" data-reviewid="${review.id}" value="submit review"></input>
   </form><div id="errormsg"></div>
   </div>
   <div id="errormsg"></div></div>`
@@ -322,9 +327,9 @@ function displayEditForm(review) {
   $('#reviewInput').val(review.chairReview)
   $('#userNameInput').val(review.userName)
   setTimeout(function (){
-    $('main').on('submit', '#chairEditForm', function(event){
+    $('#submit_chairEditForm').click(function(event){
       event.preventDefault()
-      handleEditFormSubmit(event, review)})//handleEditFormSubmit
+      handleEditFormSubmit(event)})
   },0)
 }
 
@@ -404,14 +409,13 @@ function handleAddFormSubmit(event) {
   postReview(review, getAndDisplayNewReviews, handleApiError)
 }
 
-
-function handleEditFormSubmit(event, review){
-  console.log(review)
+function handleEditFormSubmit(event){
+  console.log()
   event.preventDefault()
-  const reviewID = $(event.currentTarget).data().reviewid
+  const reviewID = $(event.currentTarget).data("reviewid")
   console.log($(event.currentTarget).data())
   const review = {
-    id: review.id,
+    id: reviewID,
     venue : $('#venueInput').val(),
     address : $('#addressInput').val(),
     imageURL : $('#image_url').val(),
@@ -596,10 +600,7 @@ function setupUIHandlers() {
   $('header').on('click', '#searchForm', displaySearchForm)
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
-  $("button").click(function(){
-      $(".hamburger").toggleClass("is-active");
-      $(".nav_menu").toggleClass("hidden")
-  })
+6
   // $('main').on('submit', '#chairAddYelpFormSearch', searchYelpVenueForm)
   // $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
   $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)
@@ -621,6 +622,6 @@ $(function() {
   getAndDisplayNewReviews()
   setTimeout(function(){
      $('main').append(renderLandingPage())
+     setupUIHandlers()
    }, 500)
-  setupUIHandlers()
 })

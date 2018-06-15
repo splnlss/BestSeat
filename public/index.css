@@ -154,13 +154,13 @@ img.centered-and-cropped-Large  {
 }
 
 div.outer-flex-dialogBox {
-     position:absolute;
+     position:fixed;
      left: 0;
      top: 0;
      width: 100vw;
-     height: 100vh;
+     height: 100%;
      z-index: 1000;
-     background-color: rgba(0,0,0, 0.5);    /* transparent 50% */ */
+     background-color: rgba(0,0,0, 0.5);
      display: flex;
      flex-direction: row;
      align-items: center;
@@ -170,7 +170,7 @@ div.outer-flex-dialogBox {
 div.inner-flex-dialogBox {
     position: absolute;
     /* left: calc(50vw - 100px); */
-    top: calc(50vh - 100px);
+    top: calc(40vh - 100px);
     width: 300px;
     height: 300px;
     background-color:white;
@@ -289,6 +289,8 @@ a:hover {
     left: 0;
     width: 100%;
     z-index: 100;
+    display: flex;
+    justify-content: center;
   }
 
 .nav_item{
