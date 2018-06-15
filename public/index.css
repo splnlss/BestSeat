@@ -233,12 +233,12 @@ li{
 }
 
 h1{
-  font-size: 24px;
+  font-size: 26px;
   text-transform: uppercase;
 }
 
 h2{
-  font-size: 20px;
+  font-size: 18px;
   margin:0;
   margin-bottom: 20px;
   text-transform: uppercase;
@@ -356,7 +356,7 @@ img.centered-and-cropped-Large {
 }
 
 h1{
-
+  font-size:21px;
 }
 
 h3{
