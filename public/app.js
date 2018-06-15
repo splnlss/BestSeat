@@ -340,7 +340,7 @@ function renderSearchForm() {
   <h2>Search By Venue</h2>
   	<form id="chairSearchForm">
     <label for="venue">Venue:</label>
-    <input type="text" id="venueSearch" name="venueSearch" size="50"> </input>
+    <input type="text" id="venueSearch" name="venueSearch" size="auto"> </input>
     <div>
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="search"></input>
