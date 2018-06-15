@@ -3,20 +3,20 @@ body *{
 }
 
 html {
-  height: 100%; /*footer*/
+  height: 100%;
 }
 
 body{
   display: flex;
   flex-direction: column;
   font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: lighter;
   color: #af9b95;
   padding:0;
   margin: 0;
   width: 100%;
-  min-height: 100%; /*footer*/
+  min-height: 100%;
   background-color: #ffffff;
 }
 
@@ -40,13 +40,12 @@ nav {
 }
 
 main {
-  /* display: flex; */
   padding-top: 20px;
   width: 80%;
   margin-left: auto;
   margin-right: auto;
   padding-bottom:30px;
-  flex: 1; /*footer*/
+  flex: 1;
 }
 
 .siteHeader__section {
@@ -56,9 +55,6 @@ main {
 
 .siteHeader__item {
   display: flex;
-  /* flex-direction: row;
-  padding: 5px 15px; */
-    /* font-size: 12px; */
 }
 
 .nav_menu{
@@ -169,10 +165,9 @@ div.outer-flex-dialogBox {
 
 div.inner-flex-dialogBox {
     position: absolute;
-    /* left: calc(50vw - 100px); */
     top: calc(40vh - 100px);
     width: 300px;
-    height: 300px;
+    height: 360px;
     background-color:white;
     padding: 20px;
     border-style: solid;
@@ -202,6 +197,9 @@ textarea:focus, input:focus {
 .editReview, .deleteReview{
   font-size: 10px;
 }
+.createBy{
+  font-size: 12px;
+}
 #userNameInput, #userPasswordInput, #venueSearch, #venueInput{
   margin-bottom: 10px;
 }
@@ -226,9 +224,9 @@ textarea:focus, input:focus {
 }
 
 ul{
-  /* list-style-type: none; */
   padding-left: 0;
 }
+
 li{
   list-style-type: none;
   padding-bottom: 5px;
@@ -238,20 +236,24 @@ h1{
   font-size: 24px;
 }
 
+h2{
+  font-size: 20px;
+  margin:0;
+  margin-bottom: 20px;
+}
+
 h3{
   font-size: 18px;
   margin:0;
 }
 
-.formTitle{
-  margin-top: 0;
-  margin-bottom: 60px;
-  text-align: center;
-  padding: 10px;
-}
-
 h4{
+  display:block;
   font-size: 16px;
+  margin: 0;
+  padding: 0px;
+  margin-top: 20px;
+  margin-bottom: 5px;
 }
 
 header.a:hover {
@@ -263,10 +265,6 @@ a:hover {
     color: #7a3f2d;
     text-decoration: none;
 }
-
-/* a:active {
-    color: black;
-} */
 
 @media only screen and (max-width: 640px) {
 
@@ -302,12 +300,6 @@ a:hover {
     order: 10;
 }
 
-/* border doesn't show up */
-/* form{
-  border: 1px dashed lightgrey;
-  padding:5px;
-} */
-
 .hamburger{
     visibility:visible;
     display:flex;
@@ -316,14 +308,9 @@ a:hover {
   }
 
 button.hamburger--collapse .hamburger-inner{
-  /* display: relative; */
   top: 40px;
   right: 20px;
-  }
-
-/* .hamburger-inner{
-  background-color: white;
-} */
+}
 
 span.hamburger-inner, span.hamburger-inner::before, span.hamburger-inner::after {
   background-color:white;
@@ -334,10 +321,7 @@ span.hamburger-inner, span.hamburger-inner::before, span.hamburger-inner::after 
   }
 
 .siteHeader__section{
-  /* display: flex;
-  flex-direction: column;
-  flex-flow: flex-start; */
-  /* padding:5px 15px; */
+
 }
 
 .siteHeader__item {
@@ -373,28 +357,12 @@ h3{
   justify-content: center;
 }
 
-/* .review_page {
-    width: auto;
-    overflow: hidden;
-    padding-bottom: 10px;
-} */
 
 div.outer-flex-dialogBox {
     display:flex;
-     /* position: absolute; */
-     /* left: calc(50vw - 100px); */
-     /* top: calc(50vh - 100px);
-     z-index: 1000;
-     background: rgba(0,0,0,0.5);
-     align-items: center;
-     justify-content: center; */
 }
 
 div.inner-flex-dialogBox {
     top: calc(30vh - 100px);
-    /*
-    width: 200px;
-    height: 200px;
-    background-color:white;
-    padding: 20px; */
+
 }
