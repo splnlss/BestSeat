@@ -128,9 +128,9 @@ function renderHeader(){
   const links = jwt?loggedIn:loggedOut
 
   return `<div class="headerContainer">
-  <div class="siteHeader__section">
+  <div class="siteHeader_section">
   <h1>${titleLink}</h1></div>
-  <div class="siteHeader__section">
+  <div class="siteHeader_section">
                   <button class="hamburger hamburger--collapse" type="button">
                       <span class="hamburger-spin">
                         <span class="hamburger-inner">
@@ -157,7 +157,7 @@ function renderLandingPage(){
             <i>a place to review chairs</i>
             <p>This site is dedicated to those of us with debilitating back pain, chronic health issues or other handicaps. Nothings worse then spending money on a fancy meal only to walk away in pain.</p>
             <p>Please add your own reviews and post photos of your favorite or worst seats.</p>
-            <p>To post a review you must first login, then use the 'create a review' form to search for the restaurant then add review. Account creation is open.</p><p>User:guest  Password:0123456789</p>
+            <p>To post a review you must first login, then use the 'create a review' form to search for the restaurant then add review. Account creation is open.</p><p>User: guest / Password: 0123456789</p>
          <div id="formButtons">
            <input type="button" id="introNewUser" value="Create Account"></input>
            <input type="button" id="introLogin" value="Login"></input>
@@ -171,7 +171,7 @@ const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
 
   return `<div class="review_container"><img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped" id="venueName" data-reviewid=${review.id}>
-    <ul class="review__text">
+    <ul class="review_text">
       <li class="review_item" id="venueName" data-reviewid=${review.id}><h2>${review.venue}</h2></li>
       <li class="review_item">${jwt?editReview:""}</li>
       <li class="review_item"><span>${review.chairReview}</span></li>
@@ -184,13 +184,13 @@ function renderReviewPage(review){
     <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
 
     return `<div class="review_page"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped-Large">
-      <ul class="review__text">
+      <ul class="review_text">
         <li class="review_item"><h2>${review.venue}</h2></li>
         <li class="review_item"><span>Address: ${review.address}</span></li>
         <li class="review_item"><span>Phone: ${review.phone}</span></li>
         <li class="review_item"><span>Price: ${review.price}</span></li>
         <lilass="review_item"><span>Yelp info: <a href="#" onClick="MyWindow=window.open('${review.yelpUrl}','MyWindow','width=600,height=600'); return false;">more info...</a>
-        <li class="review_item"><span><h4>Review:</h4> ${review.chairReview}</span></li>
+        <li class="review_item"><span><h4>Chair Review:</h4> ${review.chairReview}</span></li>
         <li class="review_item createdBy">- written by ${review.userName} ${jwt?editReview:""}</li>
       </ul>
     </div>`
@@ -201,10 +201,11 @@ function renderYelpReviewForm(data) {
   console.log(data)
   return `<div class="review_container">
   <img src="${data.image_url}" alt="Chair Review Image" class="review_image centered-and-cropped-Large">
-  <h2>Add Review</h2>
+
   <form id="chairAddForm'>
+  <fieldset><h2>Add Review</h2></fieldset>
   <ul>
-    <li></li>
+    <li><fieldset><h2>Add Review</h2></fieldset></li>
     <li class="review_item"><label for="venue">Venue:</label>
     <input type="text" id="venueInput" name="venue" value="${data.name}" size="50"></li>
 
@@ -218,13 +219,13 @@ function renderYelpReviewForm(data) {
     <input type="text" id="price" name="price" value="${data.price}" size="50"></li>
     <li><label for="text" class="review_item">Yelp Url: </label>
     <input type="text" id="yelpUrl" name="yelpUrl" value="${data.url}" size="50"></li>
-    <li class="review_item"><label for="review">Write Chair Review: </label></li>
+    <li class="review_item"><h4><label for="review">Write Chair Review: </label></h4></li>
     <li><textarea type="text" id="reviewInput" name="chairReview" rows="10" cols="50"></textarea></li>
   </ul>
   <div id="formButtons">
     <input type="button" id="cancel" value="cancel"></input>
     <input type="submit" id="submit_chairAddForm" value="submit review"></input>
-  </form><div id="errormsg"></div>
+  </form><div id="errorMsg"></div>
   </div>`
 }
 
@@ -279,7 +280,7 @@ function searchYelpVenueForm(){
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="chairAddYelpFormSearch" value="search"></input>
     </div>
-  </form><div id="errormsg"></div></div>`
+  </form><div id="errorMsg"></div></div>`
 }
 
 function renderReviewForm(review) { //edit form
@@ -308,9 +309,9 @@ function renderReviewForm(review) { //edit form
   <div id="formButtons">
     <input type="button" id="cancel" value="cancel"></input>
     <input type="submit" id="submit_chairEditForm" data-reviewid="${review.id}" value="submit review"></input>
-  </form><div id="errormsg"></div>
+  </form><div id="errorMsg"></div>
   </div>
-  <div id="errormsg"></div></div>`
+  <div id="errorMsg"></div></div>`
 }
 
 
@@ -345,7 +346,8 @@ function renderSearchForm() {
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="search"></input>
     </div>
-  </form><div id="errormsg"></div></div>  `
+  </form></div><div id="venueErrorMsg"></div>`
+
 }
 
 function displaySearchForm() {
@@ -355,9 +357,10 @@ function displaySearchForm() {
 }
 
 function noSearchResults(){
-    $('main').append(`
+    console.log('no search results')
+    $('#venueErrorMsg').html(`
       <section role="region" id="instructions" aria-live="assertive">
-        <span> Venue Not Found. Please check spelling and try again. </span>
+        <span>Venue Not Found. Please check spelling and try again.</span>
       </section>
       `)
     }
@@ -470,7 +473,7 @@ function renderLoginForm(){
     <input type="submit" id="submit" value="login"></input>
     </div>
   </form>
-  <div id="errormsg"></div>
+  <div id="errorMsg"></div>
   </div>`
 }
 
@@ -487,7 +490,7 @@ function renderNewUserForm(){
       <input type="submit" id="submit" value="create user"></input>
     </div>
   </form>
-  <div id="errormsg"></div>
+  <div id="errorMsg"></div>
   </div>`
 }
 
@@ -506,8 +509,8 @@ function postUserLogin(userData, success, error){
     //  console.log(atob(jwt))
       success(data)
     },
-    error: noUserFoundError()
-    //why does this always run even if it's successful??
+    error: noUserFoundError
+    //why does this always run even if it's successful?? (DON'T RUN AS FUNCTION, JUST PASS FUNCTION)
   }
   $.ajax(settings)
 }
@@ -555,8 +558,8 @@ function logOutUser(){
 }
 
 function noUserFoundError(){
-    $('#errormsg').html(`
-      <section role="region" id="instructions" aria-live="assertive">
+    $('#errorMsg').html(`
+      <section role="region" id="instructions" class="errorMessage" aria-live="assertive">
         <span> Username and/or password is incorrect.</span>
       </section>
       `)
@@ -593,7 +596,6 @@ function setupUIHandlers() {
   $('header').on('click', '#searchForm', displaySearchForm)
   $('main').on('submit', '#userLogin', handleUserLoginSubmit)
   $('main').on('submit', '#newUserLogin', handleNewUserLoginSubmit)
-6
   // $('main').on('submit', '#chairAddYelpFormSearch', searchYelpVenueForm)
   // $('main').on('submit', '#chairAddForm', handleAddFormSubmit)
   $('main').on('submit', '#chairSearchForm', handleSearchFormSubmit)

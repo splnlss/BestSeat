@@ -48,12 +48,12 @@ main {
   flex: 1;
 }
 
-.siteHeader__section {
+.siteHeader_section {
     display: flex;
     align-items: center;
   }
 
-.siteHeader__item {
+.siteHeader_item {
   display: flex;
 }
 
@@ -116,15 +116,16 @@ img.centered-and-cropped-Large  {
 }
 
 
-.review__text{
+.review_text{
     position: relative;
     display: flex;
     flex-direction: column;
     float: left;
+    max-width: 45%;
     margin-top: 0px;
 }
 
-.review__item{
+.review_item{
 
 }
 
@@ -221,6 +222,7 @@ textarea:focus, input:focus {
 #instructions{
   color: red;
   margin-top: 20px;
+  text-align: center;
 }
 
 ul{
@@ -247,7 +249,7 @@ h2{
 h3{
   font-size: 18px;
   margin:0;
-  /* text-transform: uppercase; */
+  /* text-transform: uppercase;  */
 }
 
 h4{
@@ -323,11 +325,11 @@ span.hamburger-inner, span.hamburger-inner::before, span.hamburger-inner::after 
     display:none;
   }
 
-.siteHeader__section{
+.siteHeader_section{
 
 }
 
-.siteHeader__item {
+.siteHeader_item {
       display: flex;
       flex-direction: row;
 }
@@ -373,6 +375,7 @@ h3{
 .review_page {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* pop up */
