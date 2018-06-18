@@ -191,7 +191,8 @@ function renderReviewPage(review){
         <li class="review_item"><span>Price: ${review.price}</span></li>
         <lilass="review_item"><span>Yelp info: <a href="#" onClick="MyWindow=window.open('${review.yelpUrl}','MyWindow','width=600,height=600'); return false;">more info...</a>
         <li class="review_item"><span><h4>Chair Review:</h4> ${review.chairReview}</span></li>
-        <li class="review_item createdBy">- written by ${review.userName} ${jwt?editReview:""}</li>
+        <li>${jwt?editReview:""}</li>
+        <li class="review_item createdBy">- written by ${review.userName}</li>
       </ul>
     </div>`
 }
