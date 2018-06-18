@@ -121,6 +121,7 @@ img.centered-and-cropped-Large  {
     display: flex;
     flex-direction: column;
     float: left;
+    max-width: 45%;
     margin-top: 0px;
 }
 
@@ -221,6 +222,7 @@ textarea:focus, input:focus {
 #instructions{
   color: red;
   margin-top: 20px;
+  text-align: center;
 }
 
 ul{
@@ -375,6 +377,7 @@ h3{
 .review_page {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 
