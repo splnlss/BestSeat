@@ -128,9 +128,9 @@ function renderHeader(){
   const links = jwt?loggedIn:loggedOut
 
   return `<div class="headerContainer">
-  <div class="siteHeader__section">
+  <div class="siteHeader_section">
   <h1>${titleLink}</h1></div>
-  <div class="siteHeader__section">
+  <div class="siteHeader_section">
                   <button class="hamburger hamburger--collapse" type="button">
                       <span class="hamburger-spin">
                         <span class="hamburger-inner">
@@ -171,7 +171,7 @@ const editReview = `<a class="editReview" data-reviewid=${review.id}>Edit</a>
   <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
 
   return `<div class="review_container"><img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped" id="venueName" data-reviewid=${review.id}>
-    <ul class="review__text">
+    <ul class="review_text">
       <li class="review_item" id="venueName" data-reviewid=${review.id}><h2>${review.venue}</h2></li>
       <li class="review_item">${jwt?editReview:""}</li>
       <li class="review_item"><span>${review.chairReview}</span></li>
@@ -184,7 +184,7 @@ function renderReviewPage(review){
     <a class="deleteReview" data-reviewid=${review.id}>Delete</a>`
 
     return `<div class="review_page"> <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped-Large">
-      <ul class="review__text">
+      <ul class="review_text">
         <li class="review_item"><h2>${review.venue}</h2></li>
         <li class="review_item"><span>Address: ${review.address}</span></li>
         <li class="review_item"><span>Phone: ${review.phone}</span></li>
