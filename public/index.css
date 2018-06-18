@@ -266,9 +266,17 @@ header.a:hover {
     text-decoration: none;
 }
 
+a{
+  cursor: pointer;
+}
+
 a:hover {
     color: #7a3f2d;
     text-decoration: none;
+}
+
+input[type="button"], input[type="submit"]{
+  cursor:pointer;
 }
 
 @media only screen and (max-width: 640px) {
@@ -285,7 +293,9 @@ a:hover {
       margin-left:auto;
       margin-right: auto;
   }
-
+#chairSearchForm > input{
+  width: 45vw;
+}
   .nav_menu {
     position: absolute;
     top: 50px;
@@ -326,7 +336,8 @@ span.hamburger-inner, span.hamburger-inner::before, span.hamburger-inner::after 
   }
 
 .siteHeader_section{
-
+  align-self: center;
+  min-height: 58px;
 }
 
 .siteHeader_item {
@@ -341,6 +352,13 @@ span.hamburger-inner, span.hamburger-inner::before, span.hamburger-inner::after 
   flex-direction:column;
 }
 
+.edit-review{
+  flex-direction: column;
+}
+
+.review_text{
+  max-width:100%
+}
 img.review_image{
   height: 100px;
 }
@@ -358,7 +376,7 @@ img.centered-and-cropped-Large {
 }
 
 h1{
-  font-size:21px;
+  font-size:20px;
 }
 
 h3{

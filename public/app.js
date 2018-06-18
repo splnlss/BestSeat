@@ -199,15 +199,14 @@ function renderReviewPage(review){
 
 function renderYelpReviewForm(data) {
   console.log(data)
-  return `<div class="review_container">
+  return `<div class="review_container edit-review">
   <img src="${data.image_url}" alt="Chair Review Image" class="review_image centered-and-cropped-Large">
 
-  <form id="chairAddForm'>
-  <fieldset><h2>Add Review</h2></fieldset>
+  <form id="chairAddForm">
   <ul>
-    <li><fieldset><h2>Add Review</h2></fieldset></li>
+    <li><h2>Add Review</h2></li>
     <li class="review_item"><label for="venue">Venue:</label>
-    <input type="text" id="venueInput" name="venue" value="${data.name}" size="50"></li>
+    <input type="text" id="venueInput" name="venue" value="${data.name}" size="auto"></li>
 
     <li class="review_item"><label for="address">Address:</label>
     <input type="text" id="addressInput" name="address" value="${data.location.address1}, ${data.location.city}, ${data.location.zip_code}" size="50"></li>
@@ -274,7 +273,7 @@ function searchYelpVenueForm(){
   <h2>Find Venue</h2>
   <form id="searchYelpVenueForm">
     <div><label for="venue">Search For Venue:</label>
-    <input type="text" id="venueInput" name="venue" size="50"> </input></div>
+    <input type="text" id="venueInput" name="venue"> </input></div>
     <p id="instructions">At the moment only places in New York City are available.</p>
     <div id="formButtons">
       <input type="button" id="cancel" value="cancel"></input>
@@ -285,9 +284,9 @@ function searchYelpVenueForm(){
 
 function renderReviewForm(review) { //edit form
   const reviewDataID = review?`data-reviewid =${review.id}`:''
-  return `<div class="review_container">
+  return `<div class="review_container edit-review">
   <img src="${review.imageURL}" alt="Chair Review Image" class="review_image centered-and-cropped-Large">
-  <form id="chairEditForm'>
+  <form id="chairEditForm">
   <ul>
     <li><h2>Edit Review</h2></li>
     <li class="review_item"><label for="venue">Venue:</label>
@@ -341,7 +340,7 @@ function renderSearchForm() {
   <h2>Search By Venue</h2>
   	<form id="chairSearchForm">
     <label for="venue">Venue:</label>
-    <input type="text" id="venueSearch" name="venueSearch" size="auto"> </input>
+    <input type="text" id="venueSearch" name="venueSearch"> </input>
     <div>
       <input type="button" id="cancel" value="cancel"></input>
       <input type="submit" id="submit" value="search"></input>
