@@ -20,8 +20,8 @@ app.use(morgan('common'))
 app.use(bodyParser.json())
 app.use(express.static('public'))
 
-passport.use(localStrategy)
-passport.use(jwtStrategy)
+// passport.use(localStrategy)
+// passport.use(jwtStrategy)
 
 app.use('/api/user', userRouter)
 app.use('/api/review/', reviewRouter)
